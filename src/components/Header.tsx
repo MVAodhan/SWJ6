@@ -29,7 +29,7 @@ export default function Header() {
           <Link to="/">Home </Link>
         </div>
         <div className="mr-4 text-md font-semibold flex justify-end gap-6 rounded-lg w-1/2 ">
-          <NavigationMenu>
+          <NavigationMenu className="flex gap-4">
             <NavigationMenuItem asChild>
               {!userAuth && <Link to="/login">Login</Link>}
             </NavigationMenuItem>
@@ -45,6 +45,9 @@ export default function Header() {
                   Logout
                 </span>
               )}
+            </NavigationMenuItem>
+            <NavigationMenuItem asChild>
+              {userAuth && <Link to="/new">New</Link>}
             </NavigationMenuItem>
           </NavigationMenu>
           {userAuth && (

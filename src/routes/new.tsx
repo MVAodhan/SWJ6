@@ -1,5 +1,5 @@
+import { pb, pickerToPST } from "@/lib/utils";
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { createClientOnlyFn } from "@tanstack/react-start";
 import {
   ArrowLeft,
   Calendar,
@@ -8,56 +8,38 @@ import {
   AlignLeft,
   Save,
 } from "lucide-react";
-import { useEffect, useState } from "react";
-
-const loadClientOnly = createClientOnlyFn(() => {
-  console.log("client only fn");
-  return {
-    message: "hello from client loader",
-  };
-});
+import { useRef } from "react";
 
 export const Route = createFileRoute("/new")({
   component: NewEpisodePage,
 });
 
 function NewEpisodePage() {
-  const [formData, setFormData] = useState({
-    title: "",
-    slug: "",
-    date: "",
-    description: "",
-    guest_name: "",
-    guest_twitter: "",
-    guest_bluesky: "",
-    guest_linkedin: "",
-  });
-  useEffect(() => {
-    const data = loadClientOnly();
-    console.log("data ", data);
-  }, []);
+  const titleRef = useRef<HTMLInputElement>(null);
+  const slugRef = useRef<HTMLInputElement>(null);
+  const dateRef = useRef<HTMLInputElement>(null);
+  const descriptionRef = useRef<HTMLTextAreaElement>(null);
+  const guestNameRef = useRef<HTMLInputElement>(null);
+  const guestTwitterRef = useRef<HTMLInputElement>(null);
+  const guestBlueskyRef = useRef<HTMLInputElement>(null);
+  const guestLinkedinRef = useRef<HTMLInputElement>(null);
 
-  const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
-  ) => {
-    const { name, value } = e.target;
-    setFormData((prev) => ({ ...prev, [name]: value }));
+  const createNewEpisode = async () => {
+    const utc = pickerToPST(dateRef.current?.value)
+      .withTimeZone("UTC")
+      .toString()
+      .split("+");
 
-    // Auto-generate slug from title if slug is empty
-    if (name === "title" && !formData.slug) {
-      const slug = value
-        .toLowerCase()
-        .replace(/[^a-z0-9]+/g, "-")
-        .replace(/(^-|-$)/g, "");
-      setFormData((prev) => ({ ...prev, slug }));
-    }
-  };
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    // TODO: Submit to PocketBase
-    console.log("Form submitted:", formData);
-    alert("Episode created! (Demo - not connected to backend)");
+    const record = await pb.collection("episodes").create({
+      title: titleRef.current?.value,
+      slug: slugRef.current?.value,
+      date: utc[0],
+      description: descriptionRef.current?.value,
+      guest_name: guestNameRef.current?.value,
+      guest_twitter: guestTwitterRef.current?.value,
+      guest_bluesky: guestBlueskyRef.current?.value,
+      guest_linkedin: guestLinkedinRef.current?.value,
+    });
   };
 
   return (
@@ -91,193 +73,181 @@ function NewEpisodePage() {
               </div>
             </div>
 
-            <form onSubmit={handleSubmit} className="p-8 space-y-8">
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                {/* Title */}
-                <div className="space-y-2 md:col-span-2">
-                  <label
-                    className="text-sm font-medium  flex items-center gap-2"
-                    htmlFor="title"
-                  >
-                    <Type size={16} className="" />
-                    Episode Title
-                  </label>
-                  <input
-                    id="title"
-                    name="title"
-                    type="text"
-                    placeholder="e.g. The Future of Web Development"
-                    value={formData.title}
-                    onChange={handleChange}
-                    className="w-full rounded-xl px-4 py-3 text-black border border-black focus:outline-none "
-                    required
-                  />
-                </div>
-
-                {/* Slug */}
-                <div className="space-y-2">
-                  <label
-                    className="text-sm font-medium text-slate-300 flex items-center gap-2"
-                    htmlFor="slug"
-                  >
-                    <LinkIcon size={16} className="" />
-                    URL Slug
-                  </label>
-                  <input
-                    id="slug"
-                    name="slug"
-                    type="text"
-                    placeholder="the-future-of-web-development"
-                    value={formData.slug}
-                    onChange={handleChange}
-                    className="w-full rounded-xl px-4 py-3 text-black border border-black focus:outline-none"
-                    required
-                  />
-                </div>
-
-                {/* Date */}
-                <div className="space-y-2">
-                  <label
-                    className="text-sm font-medium  flex items-center gap-2"
-                    htmlFor="date"
-                  >
-                    <Calendar size={16} className="" />
-                    Publish Date
-                  </label>
-                  <input
-                    id="date"
-                    name="date"
-                    type="date"
-                    value={formData.date}
-                    onChange={handleChange}
-                    className="w-full rounded-xl px-4 py-3 text-black border border-black focus:outline-none"
-                    required
-                  />
-                </div>
-
-                {/* Description */}
-                <div className="space-y-2 md:col-span-2">
-                  <label
-                    className="text-sm font-medium text-slate-300 flex items-center gap-2"
-                    htmlFor="description"
-                  >
-                    <AlignLeft size={16} className="text-slate-500" />
-                    Description
-                  </label>
-                  <textarea
-                    id="description"
-                    name="description"
-                    placeholder="What is this episode about?"
-                    value={formData.description}
-                    onChange={handleChange}
-                    rows={4}
-                    className="w-full rounded-xl px-4 py-3 text-black border border-black focus:outline-none"
-                    required
-                  />
-                </div>
-
-                {/* Guest Name */}
-                <div className="space-y-2">
-                  <label
-                    className="text-sm font-medium text-slate-300 flex items-center gap-2"
-                    htmlFor="guest_name"
-                  >
-                    Guest Name
-                  </label>
-                  <input
-                    id="guest_name"
-                    name="guest_name"
-                    type="text"
-                    placeholder="e.g. Jane Doe"
-                    value={formData.guest_name}
-                    onChange={handleChange}
-                    className="w-full rounded-xl px-4 py-3 text-black border border-black focus:outline-none"
-                    required
-                  />
-                </div>
-
-                {/* Guest Twitter */}
-                <div className="space-y-2">
-                  <label
-                    className="text-sm font-medium text-slate-300 flex items-center gap-2"
-                    htmlFor="guest_twitter"
-                  >
-                    Guest Twitter
-                  </label>
-                  <div className="relative">
-                    <span className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-500">
-                      @
-                    </span>
-                    <input
-                      id="guest_twitter"
-                      name="guest_twitter"
-                      type="text"
-                      placeholder="username"
-                      value={formData.guest_twitter}
-                      onChange={handleChange}
-                      className="w-full rounded-xl px-4 py-3 text-black border border-black focus:outline-none"
-                    />
-                  </div>
-                </div>
-
-                {/* Guest Bluesky */}
-                <div className="space-y-2">
-                  <label
-                    className="text-sm font-medium text-slate-300 flex items-center gap-2"
-                    htmlFor="guest_bluesky"
-                  >
-                    Guest Bluesky
-                  </label>
-                  <div className="relative">
-                    <span className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-500">
-                      @
-                    </span>
-                    <input
-                      id="guest_bluesky"
-                      name="guest_bluesky"
-                      type="text"
-                      placeholder="username.bsky.social"
-                      value={formData.guest_bluesky}
-                      onChange={handleChange}
-                      className="w-full rounded-xl px-4 py-3 text-black border border-black focus:outline-none"
-                    />
-                  </div>
-                </div>
-
-                {/* Guest LinkedIn */}
-                <div className="space-y-2">
-                  <label
-                    className="text-sm font-medium text-slate-300 flex items-center gap-2"
-                    htmlFor="guest_linkedin"
-                  >
-                    Guest LinkedIn
-                  </label>
-                  <input
-                    id="guest_linkedin"
-                    name="guest_linkedin"
-                    type="text"
-                    placeholder="linkedin.com/in/username"
-                    value={formData.guest_linkedin}
-                    onChange={handleChange}
-                    className="w-full rounded-xl px-4 py-3 text-black border border-black focus:outline-none"
-                  />
-                </div>
-              </div>
-
-              {/* Submit Button */}
-              <div className="pt-6 border-t border-slate-800 flex justify-end">
-                <button
-                  type="submit"
-                  className="group relative inline-flex items-center justify-center gap-2 px-8 py-3.5 text-sm font-semibold text-black transition-all duration-200 bg-slate-300 border border-transparent rounded-xl hover:bg-cyan-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-cyan-600 focus:ring-offset-slate-900 w-full"
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8 p-4">
+              {/* Title */}
+              <div className="space-y-2 md:col-span-2">
+                <label
+                  className="text-sm font-medium  flex items-center gap-2"
+                  htmlFor="title"
                 >
-                  <Save
-                    size={18}
-                    className="group-hover:scale-110 transition-transform"
-                  />
-                  <span>Add Episode</span>
-                </button>
+                  <Type size={16} className="" />
+                  Episode Title
+                </label>
+                <input
+                  id="title"
+                  name="title"
+                  type="text"
+                  placeholder="e.g. The Future of Web Development"
+                  ref={titleRef}
+                  className="w-full rounded-xl px-4 py-3 text-black border border-black focus:outline-none "
+                  required
+                />
               </div>
-            </form>
+
+              {/* Slug */}
+              <div className="space-y-2">
+                <label
+                  className="text-sm font-medium  flex items-center gap-2"
+                  htmlFor="slug"
+                >
+                  <LinkIcon size={16} className="" />
+                  URL Slug
+                </label>
+                <input
+                  id="slug"
+                  name="slug"
+                  type="text"
+                  placeholder="the-future-of-web-development"
+                  ref={slugRef}
+                  className="w-full rounded-xl px-4 py-3 text-black border border-black focus:outline-none"
+                  required
+                />
+              </div>
+
+              {/* Date */}
+              <div className="space-y-2">
+                <label
+                  className="text-sm font-medium  flex items-center gap-2"
+                  htmlFor="date"
+                >
+                  <Calendar size={16} className="" />
+                  Publish Date
+                </label>
+                <input
+                  id="date"
+                  name="date"
+                  type="date"
+                  ref={dateRef}
+                  className="w-full rounded-xl px-4 py-3 text-black border border-black focus:outline-none"
+                  required
+                />
+              </div>
+
+              {/* Description */}
+              <div className="space-y-2 md:col-span-2">
+                <label
+                  className="text-sm font-medium  flex items-center gap-2"
+                  htmlFor="description"
+                >
+                  <AlignLeft size={16} className="text-slate-500" />
+                  Description
+                </label>
+                <textarea
+                  id="description"
+                  name="description"
+                  placeholder="What is this episode about?"
+                  ref={descriptionRef}
+                  rows={4}
+                  className="w-full rounded-xl px-4 py-3 text-black border border-black focus:outline-none"
+                  required
+                />
+              </div>
+
+              {/* Guest Name */}
+              <div className="space-y-2">
+                <label
+                  className="text-sm font-medium  flex items-center gap-2"
+                  htmlFor="guest_name"
+                >
+                  Guest Name
+                </label>
+                <input
+                  id="guest_name"
+                  name="guest_name"
+                  type="text"
+                  placeholder="e.g. Jane Doe"
+                  ref={guestNameRef}
+                  className="w-full rounded-xl px-4 py-3 text-black border border-black focus:outline-none"
+                  required
+                />
+              </div>
+
+              {/* Guest Twitter */}
+              <div className="space-y-2">
+                <label
+                  className="text-sm font-medium  flex items-center gap-2"
+                  htmlFor="guest_twitter"
+                >
+                  Guest Twitter -{" "}
+                  <span className="font-light italic">no @ e.g jlengstorf</span>
+                </label>
+                <div className="relative">
+                  <input
+                    id="guest_twitter"
+                    name="guest_twitter"
+                    type="text"
+                    placeholder="username"
+                    ref={guestTwitterRef}
+                    className="w-full rounded-xl px-4 py-3 text-black border border-black focus:outline-none"
+                  />
+                </div>
+              </div>
+
+              {/* Guest Bluesky */}
+              <div className="space-y-2">
+                <label
+                  className="text-sm font-medium  flex items-center gap-2"
+                  htmlFor="guest_bluesky"
+                >
+                  Guest Bluesky
+                  <span className="font-light italic">
+                    no @ e.g jason.energy
+                  </span>
+                </label>
+                <div className="relative">
+                  <input
+                    id="guest_bluesky"
+                    name="guest_bluesky"
+                    type="text"
+                    placeholder="username.bsky.social"
+                    ref={guestBlueskyRef}
+                    className="w-full rounded-xl px-4 py-3 text-black border border-black focus:outline-none"
+                  />
+                </div>
+              </div>
+
+              {/* Guest LinkedIn */}
+              <div className="space-y-2">
+                <label
+                  className="text-sm font-medium  flex items-center gap-2"
+                  htmlFor="guest_linkedin"
+                >
+                  Guest LinkedIn
+                </label>
+                <input
+                  id="guest_linkedin"
+                  name="guest_linkedin"
+                  type="text"
+                  placeholder="linkedin.com/in/username"
+                  ref={guestLinkedinRef}
+                  className="w-full rounded-xl px-4 py-3 text-black border border-black focus:outline-none"
+                />
+              </div>
+            </div>
+
+            {/* Submit Button */}
+            <div className="pt-6 border-t border-slate-800 flex justify-end">
+              <button
+                className="group relative inline-flex items-center justify-center gap-2 px-8 py-3.5 text-sm font-semibold text-white transition-all duration-200 bg-[#f0b525] border border-transparent rounded-xl  focus:outline-none focus:ring-0 focus:ring-offset-2 w-full mb-4 mx-4"
+                onClick={() => createNewEpisode()}
+              >
+                <Save
+                  size={18}
+                  className="group-hover:scale-110 transition-transform"
+                />
+                <span>Add Episode</span>
+              </button>
+            </div>
           </div>
         </div>
       </div>
