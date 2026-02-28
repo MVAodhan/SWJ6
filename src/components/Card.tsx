@@ -5,12 +5,13 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import type { RecordModel } from "pocketbase";
 
-export default function EpisodeCard() {
+export default function EpisodeCard({ episode }: { episode: RecordModel }) {
   return (
     <Card className="text-black">
       <CardHeader>
-        <CardTitle>Card Title</CardTitle>
+        <CardTitle>{episode.title || "Card Title"}</CardTitle>
       </CardHeader>
       <CardContent>
         <p>Card Content</p>

@@ -30,7 +30,7 @@ function NewEpisodePage() {
       .toString()
       .split("+");
 
-    const record = await pb.collection("episodes").create({
+    await pb.collection("episodes").create({
       title: titleRef.current?.value,
       slug: slugRef.current?.value,
       date: utc[0],
