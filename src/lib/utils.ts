@@ -5,7 +5,10 @@ import PocketBase from "pocketbase";
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
-export const pb = new PocketBase(import.meta.env.VITE_POCKETBASE_URL);
+
+export const pb = new PocketBase(
+  import.meta.env.VITE_POCKETBASE_URL,
+).autoCancellation(false);
 
 export const pickerToPST = (pickerDate: any) => {
   const date = pickerDate.split("-");

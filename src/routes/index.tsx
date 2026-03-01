@@ -1,10 +1,9 @@
 import EpisodeCard from "@/components/Card";
 import { pb } from "@/lib/utils";
 import { createFileRoute } from "@tanstack/react-router";
-import type { RecordModel } from "pocketbase";
-import { useEffect, useState } from "react";
 
 export const Route = createFileRoute("/")({
+  loader: () => getEpisodes(),
   component: App,
 });
 
@@ -17,17 +16,8 @@ const getEpisodes = async () => {
 };
 
 function App() {
-  const [episodes, setEpisodes] = useState<RecordModel[]>([]);
+  const episodes = Route.useLoaderData();
 
-  useEffect(() => {
-    const fetchEpisodes = async () => {
-      const episodes = await getEpisodes();
-      if (episodes) {
-        setEpisodes(episodes);
-      }
-    };
-    fetchEpisodes();
-  }, []);
   return (
     <div className="min-h-screen ">
       <section className="relative py-20 px-6 text-center overflow-hidden">
