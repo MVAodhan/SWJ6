@@ -1,19 +1,12 @@
 import EpisodeCard from "@/components/Card";
-import { pb } from "@/lib/utils";
+import { getEpisodes } from "@/lib/utils";
+
 import { createFileRoute } from "@tanstack/react-router";
 
 export const Route = createFileRoute("/")({
   loader: () => getEpisodes(),
   component: App,
 });
-
-const getEpisodes = async () => {
-  if (!pb.authStore.record) {
-    return null;
-  }
-  const episodes = await pb.collection("episodes").getFullList();
-  return episodes;
-};
 
 function App() {
   const episodes = Route.useLoaderData();

@@ -19,6 +19,7 @@ function NewEpisodePage() {
   const slugRef = useRef<HTMLInputElement>(null);
   const dateRef = useRef<HTMLInputElement>(null);
   const descriptionRef = useRef<HTMLTextAreaElement>(null);
+  const socialPostRef = useRef<HTMLTextAreaElement>(null);
   const guestNameRef = useRef<HTMLInputElement>(null);
   const guestTwitterRef = useRef<HTMLInputElement>(null);
   const guestBlueskyRef = useRef<HTMLInputElement>(null);
@@ -35,6 +36,7 @@ function NewEpisodePage() {
       slug: slugRef.current?.value,
       date: utc[0],
       description: descriptionRef.current?.value,
+      social_post: socialPostRef.current?.value,
       guest_name: guestNameRef.current?.value,
       guest_twitter: guestTwitterRef.current?.value,
       guest_bluesky: guestBlueskyRef.current?.value,
@@ -47,7 +49,7 @@ function NewEpisodePage() {
       <div className="max-w-3xl mx-auto">
         <Link
           to="/"
-          className="group inline-flex items-center gap-2 text-sm font-medium 0 mb-8 transition-colors"
+          className="group inline-flex items-center gap-2 text-sm font-medium  mb-8 transition-colors"
         >
           <ArrowLeft
             size={16}
@@ -60,7 +62,7 @@ function NewEpisodePage() {
           {/* Decorative background glow */}
           <div className="absolute -inset-1 rounded-2xl blur opacity-20 pointer-events-none"></div>
 
-          <div className="relative backdrop-blur-xl border border-slate-800 rounded-2xl shadow-2xl overflow-hidden text-black">
+          <div className="relative backdrop-blur-xl border border-slate-800 rounded-2xl overflow-hidden text-black">
             {/* Header */}
             <div className="px-8 py-6 border-b border-slate-800  flex items-center gap-4">
               <div>
@@ -147,6 +149,26 @@ function NewEpisodePage() {
                   name="description"
                   placeholder="What is this episode about?"
                   ref={descriptionRef}
+                  rows={4}
+                  className="w-full rounded-xl px-4 py-3 text-black border border-black focus:outline-none"
+                  required
+                />
+              </div>
+
+              {/* Social Post */}
+              <div className="space-y-2 md:col-span-2">
+                <label
+                  className="text-sm font-medium  flex items-center gap-2"
+                  htmlFor="description"
+                >
+                  <AlignLeft size={16} className="text-slate-500" />
+                  Social Post
+                </label>
+                <textarea
+                  id="description"
+                  name="description"
+                  placeholder="What is this episode about?"
+                  ref={socialPostRef}
                   rows={4}
                   className="w-full rounded-xl px-4 py-3 text-black border border-black focus:outline-none"
                   required
