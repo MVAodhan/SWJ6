@@ -14,11 +14,10 @@ export function EditComponent({ episode }: { episode: IEpisode }) {
   const guestLinkedinRef = useRef<HTMLInputElement>(null);
   const utcObject = PBToPST(episode!.date);
 
-  console.log(utcObject);
   return (
-    <div className="relative ">
+    <div className="relative">
       {/* Decorative background glow */}
-      <div className="absolute -inset-1 rounded-2xl blur opacity-20 pointer-events-none"></div>
+      {/* <div className="absolute -inset-1 rounded-2xl blur opacity-20 pointer-events-none"></div> */}
 
       <div className="relative backdrop-blur-xl border border-slate-800 rounded-2xl overflow-hidden text-black">
         {/* Header */}
@@ -82,7 +81,7 @@ export function EditComponent({ episode }: { episode: IEpisode }) {
             >
               PST Date
             </label>
-            <div>
+            <div className="font-bold text-xl">
               {utcObject
                 .withTimeZone("America/Los_Angeles")
                 .toLocaleString("en-US", {
@@ -103,7 +102,7 @@ export function EditComponent({ episode }: { episode: IEpisode }) {
             >
               NZST Date
             </label>
-            <div>
+            <div className="font-bold text-xl">
               {utcObject
                 .withTimeZone("Pacific/Auckland")
                 .toLocaleString("en-US", {
