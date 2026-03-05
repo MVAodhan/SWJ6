@@ -11,4 +11,11 @@ export interface IEpisode extends RecordModel {
   slug: string;
   social_post: string;
   title: string;
+  links: [];
+}
+
+export interface ILink {
+  id: string;
+  label: string;
+  value: string;
 }

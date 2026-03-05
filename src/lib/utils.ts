@@ -64,3 +64,11 @@ export const getEpisode = async (id: string) => {
 
   return episode;
 };
+
+export async function updateEpisode(episode: IEpisode, options: {}) {
+  const res = await pb.collection("episodes").update(episode.id, {
+    ...options,
+  });
+
+  console.log(res);
+}
