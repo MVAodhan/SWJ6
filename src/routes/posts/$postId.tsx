@@ -3,6 +3,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { EditComponent } from "@/components/edit";
 import { Links } from "@/components/Links";
+import Copy from "@/components/Buffer";
 export const Route = createFileRoute("/posts/$postId")({
   loader: ({ params: { postId } }) => getEpisode(postId),
   component: PostComponent,
@@ -18,6 +19,7 @@ function PostComponent() {
           <Tabs defaultValue="edit" className="w-full h-full">
             <TabsList>
               <TabsTrigger value="edit">Edit</TabsTrigger>
+              <TabsTrigger value="buffer">Buffer</TabsTrigger>
               <TabsTrigger value="links">Links</TabsTrigger>
             </TabsList>
             <TabsContent value="edit">
@@ -27,6 +29,9 @@ function PostComponent() {
               <div className="w-full h-150 flex backdrop-blur-xl border border-slate-800 rounded-2xl overflow-hidden text-black">
                 <Links episode={episode} />
               </div>
+            </TabsContent>
+            <TabsContent value="buffer">
+              <Copy episode={episode} />
             </TabsContent>
           </Tabs>
         )}

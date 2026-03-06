@@ -72,3 +72,8 @@ export async function updateEpisode(episode: IEpisode, options: {}) {
 
   console.log(res);
 }
+
+export const replaceFirstHandle = (text: string) => {
+  const result = text.replace(/@([\w.]+)/, text);
+  return result;
+};
