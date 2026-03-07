@@ -76,7 +76,7 @@ export function EditComponent({ episode }: { episode: IEpisode }) {
           {/* PST Date */}
           <div className="space-y-2">
             <label
-              className="text-sm font-medium  flex items-center gap-2"
+              className="italic font-light flex items-center gap-2"
               htmlFor="date"
             >
               PST Date
@@ -97,7 +97,7 @@ export function EditComponent({ episode }: { episode: IEpisode }) {
           {/* NZST Date */}
           <div className="space-y-2">
             <label
-              className="text-sm font-medium  flex items-center gap-2"
+              className="italic font-light flex items-center gap-2"
               htmlFor="slug"
             >
               NZST Date

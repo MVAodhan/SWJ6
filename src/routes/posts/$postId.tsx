@@ -4,6 +4,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { EditComponent } from "@/components/edit";
 import { Links } from "@/components/Links";
 import Copy from "@/components/Buffer";
+import Streamyard from "@/components/Streamyard";
 export const Route = createFileRoute("/posts/$postId")({
   loader: ({ params: { postId } }) => getEpisode(postId),
   component: PostComponent,
@@ -19,11 +20,15 @@ function PostComponent() {
           <Tabs defaultValue="edit" className="w-full h-full">
             <TabsList>
               <TabsTrigger value="edit">Edit</TabsTrigger>
+              <TabsTrigger value="streamyard">Streamyard</TabsTrigger>
               <TabsTrigger value="buffer">Buffer</TabsTrigger>
               <TabsTrigger value="links">Links</TabsTrigger>
             </TabsList>
             <TabsContent value="edit">
               <EditComponent episode={episode} />
+            </TabsContent>
+            <TabsContent value="streamyard">
+              <Streamyard episode={episode} />
             </TabsContent>
             <TabsContent value="links">
               <div className="w-full h-150 flex backdrop-blur-xl border border-slate-800 rounded-2xl overflow-hidden text-black">
