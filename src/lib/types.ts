@@ -19,3 +19,11 @@ export interface ILink {
   label: string;
   value: string;
 }
+
+export type Guest = {
+  id: string;
+  name: string;
+  twitter: string;
+  bluesky: string;
+  linkedin: string;
+};

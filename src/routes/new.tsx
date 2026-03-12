@@ -7,8 +7,12 @@ import {
   Link as LinkIcon,
   AlignLeft,
   Save,
+  Plus,
+  Minus,
 } from "lucide-react";
-import { useRef } from "react";
+import { useRef, useState } from "react";
+import { nanoid } from "nanoid";
+import GuestInfo, { type Guest } from "@/components/GuestInfo";
 
 export const Route = createFileRoute("/new")({
   component: NewEpisodePage,
@@ -20,10 +24,29 @@ function NewEpisodePage() {
   const dateRef = useRef<HTMLInputElement>(null);
   const descriptionRef = useRef<HTMLTextAreaElement>(null);
   const socialPostRef = useRef<HTMLTextAreaElement>(null);
-  const guestNameRef = useRef<HTMLInputElement>(null);
-  const guestTwitterRef = useRef<HTMLInputElement>(null);
-  const guestBlueskyRef = useRef<HTMLInputElement>(null);
-  const guestLinkedinRef = useRef<HTMLInputElement>(null);
+
+  const [guests, setGuests] = useState<Guest[]>([
+    { id: nanoid(), name: "", twitter: "", bluesky: "", linkedin: "" },
+  ]);
+
+  const addGuest = () => {
+    setGuests([
+      ...guests,
+      { id: nanoid(), name: "", twitter: "", bluesky: "", linkedin: "" },
+    ]);
+  };
+
+  const removeGuest = () => {
+    if (guests.length > 0) {
+      setGuests(guests.slice(0, -1));
+    }
+  };
+
+  const updateGuest = (index: number, field: keyof Guest, value: string) => {
+    const newGuests = [...guests];
+    newGuests[index] = { ...newGuests[index], [field]: value };
+    setGuests(newGuests);
+  };
 
   const createNewEpisode = async () => {
     const utc = pickerToPST(dateRef.current?.value)
@@ -37,10 +60,7 @@ function NewEpisodePage() {
       date: utc[0],
       description: descriptionRef.current?.value,
       social_post: socialPostRef.current?.value,
-      guest_name: guestNameRef.current?.value,
-      guest_twitter: guestTwitterRef.current?.value,
-      guest_bluesky: guestBlueskyRef.current?.value,
-      guest_linkedin: guestLinkedinRef.current?.value,
+      guests: guests,
     });
   };
 
@@ -64,7 +84,7 @@ function NewEpisodePage() {
 
           <div className="relative backdrop-blur-xl border border-slate-800 rounded-2xl overflow-hidden text-black">
             {/* Header */}
-            <div className="px-8 py-6 border-b border-slate-800  flex items-center gap-4">
+            <div className="px-8 py-6 border-b border-slate-800 flex items-center justify-between gap-4">
               <div>
                 <h2 className="text-2xl font-bold text-black tracking-tight">
                   New Episode
@@ -72,6 +92,28 @@ function NewEpisodePage() {
                 <p className="text-sm  mt-1">
                   Publish a new podcast episode to your feed.
                 </p>
+              </div>
+              <div className="flex flex-col items-center gap-2">
+                <span className="text-sm font-medium">
+                  Guests: {guests.length}
+                </span>
+                <div className="flex bg-slate-100 rounded-lg border border-slate-200">
+                  <button
+                    onClick={removeGuest}
+                    type="button"
+                    className="px-3 py-1 hover:bg-slate-200 rounded-l-lg transition-colors disabled:opacity-50"
+                    disabled={guests.length === 0}
+                  >
+                    <Minus size={16} />
+                  </button>
+                  <button
+                    onClick={addGuest}
+                    type="button"
+                    className="px-3 py-1 hover:bg-slate-200 rounded-r-lg transition-colors border-l border-slate-200"
+                  >
+                    <Plus size={16} />
+                  </button>
+                </div>
               </div>
             </div>
 
@@ -175,86 +217,14 @@ function NewEpisodePage() {
                 />
               </div>
 
-              {/* Guest Name */}
-              <div className="space-y-2">
-                <label
-                  className="text-sm font-medium  flex items-center gap-2"
-                  htmlFor="guest_name"
-                >
-                  Guest Name
-                </label>
-                <input
-                  id="guest_name"
-                  name="guest_name"
-                  type="text"
-                  placeholder="e.g. Jane Doe"
-                  ref={guestNameRef}
-                  className="w-full rounded-xl px-4 py-3 text-black border border-black focus:outline-none"
-                  required
+              {guests.map((guest, index) => (
+                <GuestInfo
+                  key={guest.id}
+                  guest={guest}
+                  index={index}
+                  updateGuest={updateGuest}
                 />
-              </div>
-
-              {/* Guest Twitter */}
-              <div className="space-y-2">
-                <label
-                  className="text-sm font-medium  flex items-center gap-2"
-                  htmlFor="guest_twitter"
-                >
-                  Guest Twitter -{" "}
-                  <span className="font-light italic">no @ e.g jlengstorf</span>
-                </label>
-                <div className="relative">
-                  <input
-                    id="guest_twitter"
-                    name="guest_twitter"
-                    type="text"
-                    placeholder="username"
-                    ref={guestTwitterRef}
-                    className="w-full rounded-xl px-4 py-3 text-black border border-black focus:outline-none"
-                  />
-                </div>
-              </div>
-
-              {/* Guest Bluesky */}
-              <div className="space-y-2">
-                <label
-                  className="text-sm font-medium  flex items-center gap-2"
-                  htmlFor="guest_bluesky"
-                >
-                  Guest Bluesky
-                  <span className="font-light italic">
-                    no @ e.g jason.energy
-                  </span>
-                </label>
-                <div className="relative">
-                  <input
-                    id="guest_bluesky"
-                    name="guest_bluesky"
-                    type="text"
-                    placeholder="username.bsky.social"
-                    ref={guestBlueskyRef}
-                    className="w-full rounded-xl px-4 py-3 text-black border border-black focus:outline-none"
-                  />
-                </div>
-              </div>
-
-              {/* Guest LinkedIn */}
-              <div className="space-y-2">
-                <label
-                  className="text-sm font-medium  flex items-center gap-2"
-                  htmlFor="guest_linkedin"
-                >
-                  Guest LinkedIn
-                </label>
-                <input
-                  id="guest_linkedin"
-                  name="guest_linkedin"
-                  type="text"
-                  placeholder="linkedin.com/in/username"
-                  ref={guestLinkedinRef}
-                  className="w-full rounded-xl px-4 py-3 text-black border border-black focus:outline-none"
-                />
-              </div>
+              ))}
             </div>
 
             {/* Submit Button */}
@@ -262,6 +232,7 @@ function NewEpisodePage() {
               <button
                 className="group relative inline-flex items-center justify-center gap-2 px-8 py-3.5 text-sm font-semibold text-white transition-all duration-200 bg-[#f0b525] border border-transparent rounded-xl  focus:outline-none focus:ring-0 focus:ring-offset-2 w-full mb-4 mx-4"
                 onClick={() => createNewEpisode()}
+                // onClick={() => console.log(guests)}
               >
                 <Save
                   size={18}

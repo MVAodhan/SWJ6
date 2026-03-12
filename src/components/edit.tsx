@@ -1,17 +1,15 @@
-import type { IEpisode } from "@/lib/types";
+import type { Guest, IEpisode } from "@/lib/types";
 import { PBToPST } from "@/lib/utils";
 import { AlignLeft, LinkIcon, Save, Type } from "lucide-react";
 import { useRef } from "react";
+import { Label } from "./ui/label";
+import GuestEditInfo from "./GuestEditInfo";
 
 export function EditComponent({ episode }: { episode: IEpisode }) {
   const titleRef = useRef<HTMLInputElement>(null);
   const slugRef = useRef<HTMLInputElement>(null);
   const descriptionRef = useRef<HTMLTextAreaElement>(null);
   const socialPostRef = useRef<HTMLTextAreaElement>(null);
-  const guestNameRef = useRef<HTMLInputElement>(null);
-  const guestTwitterRef = useRef<HTMLInputElement>(null);
-  const guestBlueskyRef = useRef<HTMLInputElement>(null);
-  const guestLinkedinRef = useRef<HTMLInputElement>(null);
   const utcObject = PBToPST(episode!.date);
 
   return (
@@ -116,86 +114,18 @@ export function EditComponent({ episode }: { episode: IEpisode }) {
             </div>
           </div>
 
+          {/** TODO EDIT GUEST DATE TO ACCOMIDATE FOR SEVERAL GUESTS */}
           {/* Guest Name */}
-          <div className="space-y-2">
-            <label
-              className="text-sm font-medium  flex items-center gap-2"
-              htmlFor="guest_name"
-            >
-              Guest Name
-            </label>
-            <input
-              id="guest_name"
-              name="guest_name"
-              type="text"
-              placeholder="e.g. Jane Doe"
-              ref={guestNameRef}
-              defaultValue={episode.guest_name}
-              className="w-full rounded-xl px-4 py-3 text-black border border-black focus:outline-none"
-            />
-          </div>
-
-          {/* Guest Twitter */}
-          <div className="space-y-2">
-            <label
-              className="text-sm font-medium  flex items-center gap-2"
-              htmlFor="guest_twitter"
-            >
-              Guest Twitter -{" "}
-              <span className="font-light italic">no @ e.g jlengstorf</span>
-            </label>
-            <div className="relative">
-              <input
-                id="guest_twitter"
-                name="guest_twitter"
-                type="text"
-                placeholder="username"
-                ref={guestTwitterRef}
-                defaultValue={episode.guest_twitter}
-                className="w-full rounded-xl px-4 py-3 text-black border border-black focus:outline-none"
-              />
+          <div className="col-span-full ">
+            <Label className="text-2xl font-bold mb-2 col-span-full">
+              {" "}
+              Guests{" "}
+            </Label>
+            <div className={`grid grid-cols-${episode.guests.length} gap-2`}>
+              {episode.guests.map((guest: Guest) => (
+                <GuestEditInfo guest={guest} />
+              ))}
             </div>
-          </div>
-
-          {/* Guest Bluesky */}
-          <div className="space-y-2">
-            <label
-              className="text-sm font-medium  flex items-center gap-2"
-              htmlFor="guest_bluesky"
-            >
-              Guest Bluesky
-              <span className="font-light italic">no @ e.g jason.energy</span>
-            </label>
-            <div className="relative">
-              <input
-                id="guest_bluesky"
-                name="guest_bluesky"
-                type="text"
-                placeholder="username.bsky.social"
-                ref={guestBlueskyRef}
-                defaultValue={episode.guest_bluesky}
-                className="w-full rounded-xl px-4 py-3 text-black border border-black focus:outline-none"
-              />
-            </div>
-          </div>
-
-          {/* Guest LinkedIn */}
-          <div className="space-y-2">
-            <label
-              className="text-sm font-medium  flex items-center gap-2"
-              htmlFor="guest_linkedin"
-            >
-              Guest LinkedIn
-            </label>
-            <input
-              id="guest_linkedin"
-              name="guest_linkedin"
-              type="text"
-              placeholder="linkedin.com/in/username"
-              ref={guestLinkedinRef}
-              defaultValue={episode.guest_linkedIn}
-              className="w-full rounded-xl px-4 py-3 text-black border border-black focus:outline-none"
-            />
           </div>
         </div>
 
