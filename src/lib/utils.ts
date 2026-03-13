@@ -1,7 +1,7 @@
 import { clsx, type ClassValue } from "clsx";
 import { twMerge } from "tailwind-merge";
 import PocketBase from "pocketbase";
-import type { IEpisode } from "./types";
+import type { Guest, IEpisode } from "./types";
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
@@ -50,7 +50,7 @@ export const getEpisodes = async () => {
   if (!pb.authStore.record) {
     return null;
   }
-  const episodes = await pb.collection("episodes").getFullList();
+  const episodes: IEpisode[] = await pb.collection("episodes").getFullList();
   return episodes;
 };
 
@@ -76,4 +76,26 @@ export async function updateEpisode(episode: IEpisode, options: {}) {
 export const replaceFirstHandle = (text: string) => {
   const result = text.replace(/@([\w.]+)/, text);
   return result;
+};
+
+export const listGuests = (guests: Guest[]) => {
+  let list = "";
+  if (!guests || guests.length === 0) return list;
+
+  switch (guests.length) {
+    case 1:
+      list = guests[0].name;
+      break;
+    case 2:
+      list = `${guests[0].name} & ${guests[1].name}`;
+      break;
+    default: {
+      const names = guests.map((g) => g.name);
+      const last = names.pop();
+      list = `${names.join(", ")}, & ${last}`;
+      break;
+    }
+  }
+
+  return list;
 };

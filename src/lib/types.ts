@@ -3,10 +3,7 @@ import type { RecordModel } from "pocketbase";
 export interface IEpisode extends RecordModel {
   date: string;
   description: string;
-  guest_bluesky: string;
-  guest_linkedIn: string;
-  guest_name: string;
-  guest_twitter: string;
+  guests: Guest[];
   id: string;
   slug: string;
   social_post: string;

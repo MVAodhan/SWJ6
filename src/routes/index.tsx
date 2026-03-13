@@ -1,4 +1,5 @@
 import EpisodeCard from "@/components/Card";
+
 import { getEpisodes } from "@/lib/utils";
 
 import { createFileRoute } from "@tanstack/react-router";
@@ -24,7 +25,7 @@ function App() {
         </div>
       </section>
       <section>
-        <div className="grid grid-cols-1 sm:grid-cols-2 mx-4 gap-2">
+        <div className="grid grid-cols-1 md:grid-cols-2 mx-4 gap-2">
           {episodes &&
             episodes.map((episode) => (
               <EpisodeCard key={episode.id} episode={episode} />

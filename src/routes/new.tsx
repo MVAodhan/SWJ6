@@ -12,7 +12,10 @@ import {
 } from "lucide-react";
 import { useRef, useState } from "react";
 import { nanoid } from "nanoid";
-import GuestInfo, { type Guest } from "@/components/GuestInfo";
+import GuestInfo from "@/components/GuestInfo";
+import type { Guest } from "@/lib/types";
+import { Switch } from "@/components/ui/switch";
+import { Label } from "@/components/ui/label";
 
 export const Route = createFileRoute("/new")({
   component: NewEpisodePage,
@@ -24,6 +27,7 @@ function NewEpisodePage() {
   const dateRef = useRef<HTMLInputElement>(null);
   const descriptionRef = useRef<HTMLTextAreaElement>(null);
   const socialPostRef = useRef<HTMLTextAreaElement>(null);
+  const [wdpOnly, setWDPOnly] = useState<Boolean>(false);
 
   const [guests, setGuests] = useState<Guest[]>([
     { id: nanoid(), name: "", twitter: "", bluesky: "", linkedin: "" },
@@ -61,6 +65,7 @@ function NewEpisodePage() {
       description: descriptionRef.current?.value,
       social_post: socialPostRef.current?.value,
       guests: guests,
+      wdp_only: wdpOnly,
     });
   };
 
@@ -90,8 +95,12 @@ function NewEpisodePage() {
                   New Episode
                 </h2>
                 <p className="text-sm  mt-1">
-                  Publish a new podcast episode to your feed.
+                  Publish a new WDP & or LWJ episode.
                 </p>
+                <div className="py-2 flex flex-col gap-2">
+                  <Label>WDP ONLY</Label>
+                  <Switch onCheckedChange={() => setWDPOnly((prev) => !prev)} />
+                </div>
               </div>
               <div className="flex flex-col items-center gap-2">
                 <span className="text-sm font-medium">
@@ -239,6 +248,17 @@ function NewEpisodePage() {
                   className="group-hover:scale-110 transition-transform"
                 />
                 <span>Add Episode</span>
+              </button>
+              <button
+                className="group relative inline-flex items-center justify-center gap-2 px-8 py-3.5 text-sm font-semibold text-white transition-all duration-200 bg-[#f0b525] border border-transparent rounded-xl  focus:outline-none focus:ring-0 focus:ring-offset-2 w-full mb-4 mx-4"
+                onClick={() => console.log(wdpOnly)}
+                // onClick={() => console.log(guests)}
+              >
+                <Save
+                  size={18}
+                  className="group-hover:scale-110 transition-transform"
+                />
+                <span>Log</span>
               </button>
             </div>
           </div>
