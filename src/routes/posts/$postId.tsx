@@ -3,8 +3,9 @@ import { createFileRoute } from "@tanstack/react-router";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { EditComponent } from "@/components/edit";
 import { Links } from "@/components/Links";
-import Copy from "@/components/Buffer";
+import Buffer from "@/components/Buffer";
 import Streamyard from "@/components/Streamyard";
+import Copy from "@/components/Copy";
 export const Route = createFileRoute("/posts/$postId")({
   loader: ({ params: { postId } }) => getEpisode(postId),
   component: PostComponent,
@@ -22,7 +23,8 @@ function PostComponent() {
               <TabsTrigger value="edit">Edit</TabsTrigger>
               <TabsTrigger value="streamyard">Streamyard</TabsTrigger>
               <TabsTrigger value="buffer">Buffer</TabsTrigger>
-              <TabsTrigger value="links">Links</TabsTrigger>
+              <TabsTrigger value="links">Links</TabsTrigger> 
+              <TabsTrigger value="copy">Copy</TabsTrigger> 
             </TabsList>
             <TabsContent value="edit">
               <EditComponent episode={episode} />
@@ -30,12 +32,15 @@ function PostComponent() {
             <TabsContent value="streamyard">
               <Streamyard episode={episode} />
             </TabsContent>
+            <TabsContent value="buffer">
+              <Buffer episode={episode} />
+            </TabsContent>
             <TabsContent value="links">
               <div className="w-full h-150 flex backdrop-blur-xl border border-slate-800 rounded-2xl overflow-hidden text-black">
                 <Links episode={episode} />
               </div>
             </TabsContent>
-            <TabsContent value="buffer">
+            <TabsContent value="copy">
               <Copy episode={episode} />
             </TabsContent>
           </Tabs>

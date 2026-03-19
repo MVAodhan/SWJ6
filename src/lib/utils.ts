@@ -99,3 +99,87 @@ export const listGuests = (guests: Guest[]) => {
 
   return list;
 };
+
+export const getFirstHandle = (text: string) => {
+  const regex = /@([\w.]+)/;
+
+  const regexResults = regex.exec(text);
+  if (regexResults) {
+    const [handle, handleText] = regexResults;
+    return [handle, handleText];
+  }
+
+  return null;
+};
+
+export const generateTemplateSansPlatform = (
+  technology: string,
+  wdplink: string,
+  lwjLink?: string,
+) => {
+  let episodesTemplate = `
+Did you miss @platform_specific_handle teaching us about ${technology}
+
+No worries! Check out our conversation on the Web Dev Podcast, then code along with us on Learn with Jason.
+
+WDP: ${wdplink}
+${lwjLink ? `LWJ: ${lwjLink}` : ""}`;
+
+  return episodesTemplate;
+};
+
+export const addHandlesToTemplate = (
+  template: string,
+  guests: Guest[],
+  platform?: "twitter" | "bluesky",
+) => {
+  const regexResults = getFirstHandle(template);
+  let templateWithHandle = "";
+  if (regexResults !== null) {
+    switch (platform) {
+      case "twitter":
+        templateWithHandle = template.replace(
+          regexResults[0],
+          `@${guests[0].twitter}`,
+        );
+        break;
+      case "bluesky":
+        templateWithHandle = template.replace(
+          regexResults[0],
+          `@${guests[0].bluesky}`,
+        );
+        break;
+      default:
+        templateWithHandle = template.replace(regexResults[0], guests[0].name);
+    }
+  }
+  return templateWithHandle;
+};
+
+export const twoWeekTweet = (description: string, link: string) => {
+  const tweet = `📣 Just Scheduled
+
+${description}
+
+Details: ${link}
+`;
+  return tweet;
+};
+export const ninetyMinuteTweet = (description: string, link: string) => {
+  const tweet = `⚠️ In 90 Minutes
+
+${description}
+
+Details: ${link}
+`;
+  return tweet;
+};
+export const liveTweet = (description: string, link: string) => {
+  const tweet = `🔴 Live
+
+${description}
+
+Watch Live: ${link}
+`;
+  return tweet;
+};

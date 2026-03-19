@@ -9,6 +9,10 @@ export interface IEpisode extends RecordModel {
   social_post: string;
   title: string;
   links: [];
+  wdp_only: boolean;
+  wdp_link: string;
+  lwj_link: string;
+  technology: string;
 }
 
 export interface ILink {

@@ -35,26 +35,26 @@ const Copy = ({ episode }: { episode: IEpisode }) => {
             </Button>
           </div>
 
-          {episode.youtube_link && (
+          {episode.stream_link && (
             <div>
               <Label> Twitter Tweets</Label>
               <div className="grid grid-cols-3 gap-5 py-5 ">
                 <div className="flex flex-col justify-center gap-2 ">
-                  <Button>
+                  <Button className="bg-swj-yellow">
                     <Clipboard />
                     Two Weeks
                   </Button>
                   <div className="flex justify-center">TW DateTime</div>
                 </div>
                 <div className="flex flex-col justify-center gap-2">
-                  <Button>
+                  <Button className="bg-swj-yellow">
                     <Clipboard />
                     Ninety Munutes
                   </Button>
                   <div className="flex justify-center">NM DateTime</div>
                 </div>
                 <div className="flex flex-col justify-center gap-2 ">
-                  <Button>
+                  <Button className="bg-swj-yellow">
                     <Clipboard />
                     Live
                   </Button>
@@ -76,21 +76,21 @@ const Copy = ({ episode }: { episode: IEpisode }) => {
               <Label>Bluesky Skeets</Label>
               <div className="grid grid-cols-3 gap-5">
                 <div className="flex flex-col justify-center gap-2 ">
-                  <Button>
+                  <Button className="bg-swj-yellow">
                     <Clipboard />
                     Two Weeks
                   </Button>
                   <div className="flex justify-center">TW DateTime</div>
                 </div>
                 <div className="flex flex-col justify-center gap-2 ">
-                  <Button>
+                  <Button className="bg-swj-yellow">
                     <Clipboard />
                     Ninety Minute
                   </Button>
                   <div className="flex justify-center">NM DateTime</div>
                 </div>
                 <div className="flex flex-col justify-center gap-2 ">
-                  <Button>
+                  <Button className="bg-swj-yellow">
                     <Clipboard />
                     Live
                   </Button>
@@ -111,9 +111,10 @@ const Copy = ({ episode }: { episode: IEpisode }) => {
                   <div>Live </div>
                   <Checkbox />
                 </div>
-                <Button className="w-full col-span-3">
+                <Button className=" col-span-3 bg-swj-yellow">
                   Update Bluesky & Twitter Status
                 </Button>
+                <div className="size-2.5 "></div>
               </div>
             </div>
           )}
