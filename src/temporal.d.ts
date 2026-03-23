@@ -43,6 +43,16 @@ declare namespace Temporal {
     readonly epochSeconds: number;
     readonly epochMilliseconds: number;
 
+    add(
+      duration: string | object | Duration,
+      options?: { overflow?: "constrain" | "reject" },
+    ): ZonedDateTime;
+
+    subtract(
+      duration: string | object | Duration,
+      options?: { overflow?: "constrain" | "reject" },
+    ): ZonedDateTime;
+
     toString(options?: object): string;
     toJSON(): string;
     toLocaleString(locales?: string | string[], options?: object): string;

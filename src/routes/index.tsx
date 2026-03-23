@@ -19,7 +19,7 @@ function App() {
         <div className="relative max-w-5xl mx-auto">
           <div className="flex items-center justify-center gap-6 mb-6">
             <h1 className="text-6xl md:text-7xl font-black  tracking-[-0.08em]">
-              <span className="text-[#f0b525]">SCHEDULE WITH JASON</span>{" "}
+              <span className="text-swj-yellow">SCHEDULE WITH JASON</span>{" "}
             </h1>
           </div>
         </div>

@@ -10,9 +10,17 @@ export interface IEpisode extends RecordModel {
   title: string;
   links: [];
   wdp_only: boolean;
-  wdp_link: string;
-  lwj_link: string;
+  wdp_link?: string;
+  lwj_link?: string;
+  stream_link: string;
   technology: string;
+  tw_tweet: boolean;
+  nm_tweet: boolean;
+  live_tweet: boolean;
+  tw_skeet: boolean;
+  nm_skeet: boolean;
+  live_skeet: boolean;
+  discord: boolean;
 }
 
 export interface ILink {

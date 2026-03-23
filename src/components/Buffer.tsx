@@ -5,21 +5,35 @@ import { Checkbox } from "./ui/checkbox";
 import { Clipboard } from "lucide-react";
 import { Textarea } from "./ui/textarea";
 import { useRef, useState } from "react";
+import { localStringOptions, pb, PBToUTC } from "@/lib/utils";
 
 const Copy = ({ episode }: { episode: IEpisode }) => {
   const socialPost = useRef<HTMLTextAreaElement>(null);
 
-  const [twTweet, setTwTweet] = useState();
-  const [nmTweet, setNmTweet] = useState();
-  const [lTweet, setLTweet] = useState();
-  const [twSkeet, setTwSkeet] = useState();
-  const [nmSkeet, setNmSkeet] = useState();
-  const [lSkeet, setLSkeet] = useState();
+  const [twTweet, setTwTweet] = useState<Boolean>(episode.tw_tweet);
+  const [nmTweet, setNmTweet] = useState<Boolean>(episode.nm_tweet);
+  const [liveTweet, setLiveTweet] = useState<Boolean>(episode.live_tweet);
+  const [twSkeet, setTwSkeet] = useState<boolean>(episode.tw_skeet);
+  const [nmSkeet, setNmSkeet] = useState<Boolean>(episode.nm_skeet);
+  const [liveSkeet, setLiveSkeet] = useState<Boolean>(episode.live_skeet);
+
+  const utcObj = PBToUTC(episode.date);
+
+  const updateStatuses = async () => {
+    await pb.collection("episodes").update(`${episode.id}`, {
+      tw_tweet: twTweet,
+      nm_tweet: nmTweet,
+      live_tweet: liveTweet,
+      tw_skeet: twSkeet,
+      nm_skeet: nmSkeet,
+      live_skeet: liveSkeet,
+    });
+  };
   return (
     <div className="w-full h-150 flex backdrop-blur-xl border border-slate-800 rounded-2xl overflow-hidden text-black p-4">
       {episode.social_post && (
         <div className="flex flex-col py-2 gap-2">
-          <div className="text-xl font-semibold ">Social Post</div>
+          <Label>Social Post</Label>
 
           <div className="flex items-center">
             <Textarea defaultValue={episode.social_post} ref={socialPost} />
@@ -44,74 +58,123 @@ const Copy = ({ episode }: { episode: IEpisode }) => {
                     <Clipboard />
                     Two Weeks
                   </Button>
-                  <div className="flex justify-center">TW DateTime</div>
+                  <div className="flex justify-center">
+                    {utcObj
+                      .subtract({ weeks: 2 })
+                      .withTimeZone("America/Los_Angeles")
+                      .toLocaleString("en-US", localStringOptions)}
+                  </div>
                 </div>
                 <div className="flex flex-col justify-center gap-2">
                   <Button className="bg-swj-yellow">
                     <Clipboard />
                     Ninety Munutes
                   </Button>
-                  <div className="flex justify-center">NM DateTime</div>
+                  <div className="flex justify-center">
+                    {utcObj
+                      .subtract({ minutes: 90 })
+                      .withTimeZone("America/Los_Angeles")
+                      .toLocaleString("en-US", localStringOptions)}
+                  </div>
                 </div>
                 <div className="flex flex-col justify-center gap-2 ">
                   <Button className="bg-swj-yellow">
                     <Clipboard />
                     Live
                   </Button>
-                  <div className="flex justify-center">Live DateTime</div>
+                  <div className="flex justify-center">
+                    {utcObj
+                      .withTimeZone("America/Los_Angeles")
+                      .toLocaleString("en-US", localStringOptions)}
+                  </div>
                 </div>
                 <div className="flex justify-around">
                   <div>Two Weeks</div>
-                  <Checkbox />
+                  <Checkbox
+                    onCheckedChange={() => setTwTweet((p) => !p)}
+                    defaultChecked={episode.tw_tweet}
+                  />
                 </div>
                 <div className="flex justify-around">
                   <div>Ninety Minutes</div>
-                  <Checkbox />
+                  <Checkbox
+                    onCheckedChange={() => setNmTweet((p) => !p)}
+                    defaultChecked={episode.nm_tweet}
+                  />
                 </div>
                 <div className="flex justify-around">
                   <div>Live</div>
-                  <Checkbox />
+                  <Checkbox
+                    onCheckedChange={() => setLiveTweet((p) => !p)}
+                    defaultChecked={episode.live_tweet}
+                  />
                 </div>
               </div>
               <Label>Bluesky Skeets</Label>
-              <div className="grid grid-cols-3 gap-5">
+              <div className="grid grid-cols-3 gap-5 py-5">
                 <div className="flex flex-col justify-center gap-2 ">
                   <Button className="bg-swj-yellow">
                     <Clipboard />
                     Two Weeks
                   </Button>
-                  <div className="flex justify-center">TW DateTime</div>
+                  <div className="flex justify-center">
+                    {utcObj
+                      .subtract({ weeks: 2 })
+                      .withTimeZone("America/Los_Angeles")
+                      .toLocaleString("en-US", localStringOptions)}
+                  </div>
                 </div>
                 <div className="flex flex-col justify-center gap-2 ">
                   <Button className="bg-swj-yellow">
                     <Clipboard />
                     Ninety Minute
                   </Button>
-                  <div className="flex justify-center">NM DateTime</div>
+                  <div className="flex justify-center">
+                    {utcObj
+                      .subtract({ minutes: 90 })
+                      .withTimeZone("America/Los_Angeles")
+                      .toLocaleString("en-US", localStringOptions)}
+                  </div>
                 </div>
                 <div className="flex flex-col justify-center gap-2 ">
                   <Button className="bg-swj-yellow">
                     <Clipboard />
                     Live
                   </Button>
-                  <div className="flex justify-center">Live DateTime</div>
+                  <div className="flex justify-center">
+                    {utcObj
+                      .withTimeZone("America/Los_Angeles")
+                      .toLocaleString("en-US", localStringOptions)}
+                  </div>
                 </div>
               </div>
               {/**Bluesky Tweet checkboxes */}
               <div className="grid grid-cols-3 gap-5 py-5">
                 <div className="flex justify-around">
                   <div>Two Weeks </div>
-                  <Checkbox />
+                  <Checkbox
+                    defaultChecked={episode.tw_skeet}
+                    onCheckedChange={() => setTwSkeet((p) => !p)}
+                  />
                 </div>
                 <div className="flex justify-around">
                   <div>Ninety Minutes </div>
-                  <Checkbox />
+                  <Checkbox
+                    defaultChecked={episode.nm_skeet}
+                    onCheckedChange={() => setNmSkeet((p) => !p)}
+                  />
                 </div>
                 <div className="flex justify-around">
                   <div>Live </div>
-                  <Checkbox />
+                  <Checkbox
+                    defaultChecked={episode.live_skeet}
+                    onCheckedChange={() => setLiveSkeet((p) => !p)}
+                  />
                 </div>
-                <Button className=" col-span-3 bg-swj-yellow">
+                <Button
+                  className=" col-span-3 bg-swj-yellow"
+                  onClick={updateStatuses}
+                >
                   Update Bluesky & Twitter Status
                 </Button>
                 <div className="size-2.5 "></div>

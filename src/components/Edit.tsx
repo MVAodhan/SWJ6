@@ -1,16 +1,16 @@
 import type { Guest, IEpisode } from "@/lib/types";
-import { PBToPST } from "@/lib/utils";
+import { PBToUTC } from "@/lib/utils";
 import { AlignLeft, LinkIcon, Save, Type } from "lucide-react";
 import { useRef } from "react";
 import { Label } from "./ui/label";
 import GuestEditInfo from "./GuestEditInfo";
 
-export function EditComponent({ episode }: { episode: IEpisode }) {
+export default function Edit({ episode }: { episode: IEpisode }) {
   const titleRef = useRef<HTMLInputElement>(null);
   const slugRef = useRef<HTMLInputElement>(null);
   const descriptionRef = useRef<HTMLTextAreaElement>(null);
   const socialPostRef = useRef<HTMLTextAreaElement>(null);
-  const utcObject = PBToPST(episode!.date);
+  const utcObject = PBToUTC(episode!.date);
 
   return (
     <div className="relative">
@@ -73,12 +73,12 @@ export function EditComponent({ episode }: { episode: IEpisode }) {
 
           {/* PST Date */}
           <div className="space-y-2">
-            <label
+            <Label
               className="italic font-light flex items-center gap-2"
               htmlFor="date"
             >
               PST Date
-            </label>
+            </Label>
             <div className="font-bold text-xl">
               {utcObject
                 .withTimeZone("America/Los_Angeles")

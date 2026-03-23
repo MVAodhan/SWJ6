@@ -23,7 +23,7 @@ export const pickerToPST = (pickerDate: any) => {
   });
   return zonedDateTime;
 };
-export const PBToPST = (PBDate: string) => {
+export const PBToUTC = (PBDate: string) => {
   const dateTimeZone = PBDate.split(".");
 
   const date = dateTimeZone[0].split(" ");
@@ -44,6 +44,16 @@ export const PBToPST = (PBDate: string) => {
     minute: Number(minutes),
   });
   return zonedDateTime;
+};
+
+export const localStringOptions = {
+  weekday: "short",
+  calendar: "gregory",
+  year: "2-digit",
+  month: "short",
+  day: "numeric",
+  hour: "numeric",
+  minute: "2-digit",
 };
 
 export const getEpisodes = async () => {
@@ -113,14 +123,25 @@ export const getFirstHandle = (text: string) => {
 };
 
 export const generateTemplateSansPlatform = (
+  wdpOnly: boolean,
   technology: string,
   wdplink: string,
   lwjLink?: string,
 ) => {
+  let templateText = "";
+  if (!wdpOnly && wdplink && lwjLink) {
+    templateText =
+      "No worries! Check out our conversation on the Web Dev Podcast, then code along with us on Learn with Jason.";
+  }
+  if (wdpOnly && wdplink) {
+    templateText =
+      "No worries! Check out our conversation on the Web Dev Podcast.";
+  }
+
   let episodesTemplate = `
 Did you miss @platform_specific_handle teaching us about ${technology}
 
-No worries! Check out our conversation on the Web Dev Podcast, then code along with us on Learn with Jason.
+${templateText}
 
 WDP: ${wdplink}
 ${lwjLink ? `LWJ: ${lwjLink}` : ""}`;
@@ -183,3 +204,10 @@ Watch Live: ${link}
 `;
   return tweet;
 };
+
+export const captionsBlurb = `*Captions provided by White Coat Captioning (https://whitecoatcaptioning.com/). 
+Communication Access Realtime Translation (CART) is provided in order to facilitate
+communication accessibility and may not be a totally verbatim record of the proceedings.*`;
+
+export const calInvite =
+  "lengstorf.com_9plj1m6u9vtddldoinl0hs2vgk@group.calendar.google.com";

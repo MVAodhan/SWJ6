@@ -1,11 +1,13 @@
 import { getEpisode } from "@/lib/utils";
 import { createFileRoute } from "@tanstack/react-router";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { EditComponent } from "@/components/edit";
 import { Links } from "@/components/Links";
 import Buffer from "@/components/Buffer";
 import Streamyard from "@/components/Streamyard";
 import Copy from "@/components/Copy";
+import Cal from "@/components/Cal";
+import Discord from "@/components/Discord";
+import Edit from "@/components/edit";
 export const Route = createFileRoute("/posts/$postId")({
   loader: ({ params: { postId } }) => getEpisode(postId),
   component: PostComponent,
@@ -22,23 +24,29 @@ function PostComponent() {
             <TabsList>
               <TabsTrigger value="edit">Edit</TabsTrigger>
               <TabsTrigger value="streamyard">Streamyard</TabsTrigger>
+              <TabsTrigger value="cal">Cal</TabsTrigger>
               <TabsTrigger value="buffer">Buffer</TabsTrigger>
+              <TabsTrigger value="discord">Discord</TabsTrigger>
               <TabsTrigger value="links">Links</TabsTrigger> 
               <TabsTrigger value="copy">Copy</TabsTrigger> 
             </TabsList>
             <TabsContent value="edit">
-              <EditComponent episode={episode} />
+              <Edit episode={episode} />
             </TabsContent>
             <TabsContent value="streamyard">
               <Streamyard episode={episode} />
             </TabsContent>
+            <TabsContent value="cal">
+              <Cal episode={episode} />
+            </TabsContent>
             <TabsContent value="buffer">
               <Buffer episode={episode} />
             </TabsContent>
+            <TabsContent value="discord">
+              <Discord episode={episode} />
+            </TabsContent>
             <TabsContent value="links">
-              <div className="w-full h-150 flex backdrop-blur-xl border border-slate-800 rounded-2xl overflow-hidden text-black">
-                <Links episode={episode} />
-              </div>
+              <Links episode={episode} />
             </TabsContent>
             <TabsContent value="copy">
               <Copy episode={episode} />

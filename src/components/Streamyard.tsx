@@ -4,7 +4,7 @@ import { Clipboard } from "lucide-react";
 import type { IEpisode } from "@/lib/types";
 import { Input } from "./ui/input";
 import { Button } from "./ui/button";
-import { pb, PBToPST } from "@/lib/utils";
+import { pb, PBToUTC } from "@/lib/utils";
 import { toast } from "sonner";
 import { Label } from "./ui/label";
 
@@ -20,11 +20,13 @@ const Streamyard = ({ episode }: { episode: IEpisode }) => {
     }
   };
 
-  const utcObj = PBToPST(episode.date);
+  const socialPost = useRef<HTMLTextAreaElement>(null);
+
+  const utcObj = PBToUTC(episode.date);
   return (
     <div className="w-full h-150 flex backdrop-blur-xl border border-slate-800 rounded-2xl overflow-hidden text-black p-4">
       <div className="flex flex-col gap-2">
-        <div className="flex flex-col gap-4">
+        <div className="flex flex-col gap-2">
           <Label>Title</Label>
           <div className="flex gap-3">
             <div>{episode.title}</div>
@@ -32,15 +34,27 @@ const Streamyard = ({ episode }: { episode: IEpisode }) => {
               className="size-4 cursor-pointer"
               onClick={() => {
                 window.navigator.clipboard.writeText(episode.title);
-
                 toast("Title copied");
               }}
             />
           </div>
         </div>
-        <div className="flex gap-2 pt-5 items-center">
-          <Textarea defaultValue={episode.description} />
-          <Clipboard />
+        <div className="flex flex-col gap-2 pt-5 ">
+          <Label>Social Post</Label>
+
+          <div className="flex  items-center">
+            <Textarea defaultValue={episode.social_post} ref={socialPost} />
+            <Button
+              variant="ghost"
+              onClick={() =>
+                navigator.clipboard.writeText(
+                  socialPost.current?.value as string,
+                )
+              }
+            >
+              <Clipboard />
+            </Button>
+          </div>
         </div>
         <div className="flex w-full gap-2  py-5 justify-around">
           <div>
@@ -81,7 +95,7 @@ const Streamyard = ({ episode }: { episode: IEpisode }) => {
           <Input defaultValue={episode.stream_link} ref={ytLinkRef} />
         </div>
         <Button
-          className="w-full"
+          className="w-full bg-swj-yellow"
           onClick={() => {
             updateYoutubeLink();
           }}

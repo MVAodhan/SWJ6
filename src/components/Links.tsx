@@ -42,7 +42,7 @@ export const Links = ({ episode }: { episode: IEpisode }) => {
   };
 
   return (
-    <>
+    <div className="w-full h-150 flex backdrop-blur-xl border border-slate-800 rounded-2xl overflow-hidden text-black">
       <ScrollArea className="h-full w-1/2 rounded-md border p-4">
         {links &&
           links.map((link) => (
@@ -85,13 +85,13 @@ export const Links = ({ episode }: { episode: IEpisode }) => {
               <Plus className="h-4 w-4 mr-2" />
               Add Link
             </Button>
-            <Button onClick={updateLinks}>
+            <Button onClick={updateLinks} className="bg-swj-yellow">
               <Save className="h-4 w-4 mr-2" />
               Save Links
             </Button>
           </div>
         </div>
       </div>
-    </>
+    </div>
   );
 };

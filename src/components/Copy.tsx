@@ -60,67 +60,56 @@ const Copy = ({ episode }: { episode: IEpisode }) => {
           />
         </div>
         <div className="w-full">
-          <Button className="w-full" onClick={saveEpisodeLinks}>
+          <Button className="w-full bg-swj-yellow" onClick={saveEpisodeLinks}>
             Save links
           </Button>
         </div>
-        <div className="flex gap-2">
-          <div className="flex flex-col">
-            <Label>Twitter</Label>
-            <Button
-              onClick={() => {
-                let generated = generateTemplateSansPlatform(techText, wdpLink);
-                generated = addHandlesToTemplate(generated, episode.guests);
-                window.navigator.clipboard.writeText(generated);
-                toast("Live Episode copied");
-              }}
-            >
-              Copy Live Episode{" "}
-            </Button>
+        {techText && wdpLink && (
+          <div className="flex flex-col gap-2 my-5">
+            <div className="flex flex-col gap-2">
+              <Label>Twitter</Label>
+              <Button
+                className="bg-swj-yellow"
+                onClick={() => {
+                  let generated = generateTemplateSansPlatform(
+                    episode.wdp_only,
+                    techText,
+                    wdpLink,
+                    lwjLink ?? lwjLink,
+                  );
+                  generated = addHandlesToTemplate(generated, episode.guests);
+                  window.navigator.clipboard.writeText(generated);
+                  toast("Live Episode copied");
+                }}
+              >
+                Copy Live Episode{" "}
+              </Button>
+            </div>
+            <div className="flex flex-col gap-2">
+              <Label>Bluesky</Label>
+              <Button
+                className="bg-swj-yellow"
+                onClick={() => {
+                  let generated = generateTemplateSansPlatform(
+                    episode.wdp_only,
+                    techText,
+                    wdpLink,
+                    lwjLink ?? lwjLink,
+                  );
+                  generated = addHandlesToTemplate(
+                    generated,
+                    episode.guests,
+                    "bluesky",
+                  );
+
+                  window.navigator.clipboard.writeText(generated);
+                  toast("Live Episode copied");
+                }}
+              >
+                Copy Live Episode{" "}
+              </Button>
+            </div>
           </div>
-          <Button
-            onClick={() => {
-              let generated = generateTemplateSansPlatform(techText, wdpLink);
-              generated = addHandlesToTemplate(
-                generated,
-                episode.guests,
-                "bluesky",
-              );
-
-              window.navigator.clipboard.writeText(generated);
-              toast("Live Episode copied");
-            }}
-          >
-            Copy Live Episode{" "}
-          </Button>
-        </div>
-
-        {episode.wdp_only === true && techText && wdpLink && (
-          <Button
-            onClick={() => {
-              const generated = generateTemplateSansPlatform(techText, wdpLink);
-              window.navigator.clipboard.writeText(generated);
-              toast("Live Episode copied");
-            }}
-          >
-            Copy Live Episode{" "}
-          </Button>
-        )}
-
-        {!episode.wdp_only && techText && wdpLink && lwjLink && (
-          <Button
-            onClick={() => {
-              const generated = generateTemplateSansPlatform(
-                techText,
-                wdpLink,
-                lwjLink,
-              );
-              window.navigator.clipboard.writeText(generated);
-              toast("Live Episode copied");
-            }}
-          >
-            Shows Twitter{" "}
-          </Button>
         )}
       </div>
     </div>
