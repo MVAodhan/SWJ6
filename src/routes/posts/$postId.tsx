@@ -7,7 +7,7 @@ import Streamyard from "@/components/Streamyard";
 import Copy from "@/components/Copy";
 import Cal from "@/components/Cal";
 import Discord from "@/components/Discord";
-import Edit from "@/components/edit";
+import Edit from "@/components/Edit";
 export const Route = createFileRoute("/posts/$postId")({
   loader: ({ params: { postId } }) => getEpisode(postId),
   component: PostComponent,
