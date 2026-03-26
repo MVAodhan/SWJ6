@@ -24,12 +24,14 @@ function App() {
           </div>
         </div>
       </section>
-      <section>
-        <div className="grid grid-cols-1 md:grid-cols-2 mx-4 gap-2">
-          {episodes &&
-            episodes.map((episode) => (
-              <EpisodeCard key={episode.id} episode={episode} />
-            ))}
+      <section className="flex w-screen justify-center">
+        <div className="flex w-11/12">
+          <div className="grid grid-cols-1 md:grid-cols-2 mx-4 gap-2 w-full">
+            {episodes &&
+              episodes.map((episode) => (
+                <EpisodeCard key={episode.id} episode={episode} />
+              ))}
+          </div>
         </div>
       </section>
     </div>

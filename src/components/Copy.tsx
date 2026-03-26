@@ -14,9 +14,9 @@ import {
 import { toast } from "sonner";
 
 const Copy = ({ episode }: { episode: IEpisode }) => {
-  const [wdpLink, setWdpink] = useState("");
-  const [lwjLink, setLwjLink] = useState("");
-  const [techText, setTechText] = useState("");
+  const [wdpLink, setWdpink] = useState(episode.wdp_link);
+  const [lwjLink, setLwjLink] = useState(episode.lwj_link);
+  const [techText, setTechText] = useState(episode.technology);
 
   const saveEpisodeLinks = async () => {
     await pb.collection("episodes").update(`${episode.id}`, {
@@ -32,6 +32,7 @@ const Copy = ({ episode }: { episode: IEpisode }) => {
           <div className="flex flex-col gap-2">
             <Label>LWJ Link</Label>
             <Input
+              defaultValue={lwjLink}
               onChange={(e) => {
                 setLwjLink(e.target.value);
               }}
@@ -41,6 +42,7 @@ const Copy = ({ episode }: { episode: IEpisode }) => {
         <div className="flex flex-col gap-2">
           <Label>WDP Link</Label>
           <Input
+            defaultValue={wdpLink}
             onChange={(e) => {
               setWdpink(e.target.value);
             }}
@@ -54,6 +56,7 @@ const Copy = ({ episode }: { episode: IEpisode }) => {
           </div>
           <Input
             placeholder="technology"
+            defaultValue={techText}
             onChange={(e) => {
               setTechText(e.target.value);
             }}

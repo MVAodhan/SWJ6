@@ -8,6 +8,8 @@ import Copy from "@/components/Copy";
 import Cal from "@/components/Cal";
 import Discord from "@/components/Discord";
 import Edit from "@/components/Edit";
+import WDP from "@/components/WDP";
+import LWJ from "@/components/LWJ";
 export const Route = createFileRoute("/posts/$postId")({
   loader: ({ params: { postId } }) => getEpisode(postId),
   component: PostComponent,
@@ -28,7 +30,9 @@ function PostComponent() {
               <TabsTrigger value="buffer">Buffer</TabsTrigger>
               <TabsTrigger value="discord">Discord</TabsTrigger>
               <TabsTrigger value="links">Links</TabsTrigger> 
-              <TabsTrigger value="copy">Copy</TabsTrigger> 
+              <TabsTrigger value="wdp">WDP Sanity</TabsTrigger> 
+              <TabsTrigger value="lwj">LWJ Sanity</TabsTrigger> 
+              <TabsTrigger value="published">Published Episodes</TabsTrigger> 
             </TabsList>
             <TabsContent value="edit">
               <Edit episode={episode} />
@@ -48,7 +52,13 @@ function PostComponent() {
             <TabsContent value="links">
               <Links episode={episode} />
             </TabsContent>
-            <TabsContent value="copy">
+            <TabsContent value="wdp">
+              <WDP episode={episode} />
+            </TabsContent>
+            <TabsContent value="lwj">
+              <LWJ episode={episode} />
+            </TabsContent>
+            <TabsContent value="published">
               <Copy episode={episode} />
             </TabsContent>
           </Tabs>

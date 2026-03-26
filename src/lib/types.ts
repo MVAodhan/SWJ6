@@ -36,3 +36,9 @@ export type Guest = {
   bluesky: string;
   linkedin: string;
 };
+
+export interface ILink {
+  id: string;
+  label: string;
+  value: string;
+}

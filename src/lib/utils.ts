@@ -1,7 +1,7 @@
 import { clsx, type ClassValue } from "clsx";
 import { twMerge } from "tailwind-merge";
 import PocketBase from "pocketbase";
-import type { Guest, IEpisode } from "./types";
+import type { Guest, IEpisode, ILink } from "./types";
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
@@ -211,3 +211,21 @@ communication accessibility and may not be a totally verbatim record of the proc
 
 export const calInvite =
   "lengstorf.com_9plj1m6u9vtddldoinl0hs2vgk@group.calendar.google.com";
+
+export const formatLinks = (JSONLinks: ILink[]) => {
+  const linkSet = new Set<ILink>();
+  const linkValues = JSONLinks.map((link: ILink) => link);
+
+  for (const value of linkValues) {
+    linkSet.add(value);
+  }
+
+  let linkSetStrings: string[] = [];
+  linkSet.forEach((link) => {
+    const linkString = `- ${link!.label}: ${link!.value}`;
+    linkSetStrings = [...linkSetStrings, linkString];
+  });
+
+  const unique = linkSetStrings.join("\n");
+  return unique;
+};
