@@ -13,7 +13,7 @@ import {
 import { useRef, useState } from "react";
 import { nanoid } from "nanoid";
 import GuestInfo from "@/components/GuestInfo";
-import type { Guest } from "@/lib/types";
+import type { IGuest } from "@/lib/types";
 import { Switch } from "@/components/ui/switch";
 import { Label } from "@/components/ui/label";
 
@@ -27,9 +27,13 @@ function NewEpisodePage() {
   const dateRef = useRef<HTMLInputElement>(null);
   const descriptionRef = useRef<HTMLTextAreaElement>(null);
   const socialPostRef = useRef<HTMLTextAreaElement>(null);
+  const titleWdpRef = useRef<HTMLInputElement>(null);
+  const slugWdpRef = useRef<HTMLInputElement>(null);
+  const descriptionWdpRef = useRef<HTMLTextAreaElement>(null);
+  const socialPostWdpRef = useRef<HTMLTextAreaElement>(null);
   const [wdpOnly, setWDPOnly] = useState<Boolean>(false);
 
-  const [guests, setGuests] = useState<Guest[]>([
+  const [guests, setGuests] = useState<IGuest[]>([
     { id: nanoid(), name: "", twitter: "", bluesky: "", linkedin: "" },
   ]);
 
@@ -46,7 +50,7 @@ function NewEpisodePage() {
     }
   };
 
-  const updateGuest = (index: number, field: keyof Guest, value: string) => {
+  const updateGuest = (index: number, field: keyof IGuest, value: string) => {
     const newGuests = [...guests];
     newGuests[index] = { ...newGuests[index], [field]: value };
     setGuests(newGuests);
@@ -66,6 +70,10 @@ function NewEpisodePage() {
       social_post: socialPostRef.current?.value,
       guests: guests,
       wdp_only: wdpOnly,
+      title_wdp: titleWdpRef,
+      slug_wdp: slugWdpRef,
+      description_wdp: descriptionWdpRef,
+      social_post_wpd: socialPostWdpRef,
     });
   };
 
@@ -94,7 +102,7 @@ function NewEpisodePage() {
                 <h2 className="text-2xl font-bold text-black tracking-tight">
                   New Episode
                 </h2>
-                <p className="text-sm  mt-1">
+                <p className="text-sm mt-1">
                   Publish a new WDP & or LWJ episode.
                 </p>
                 <div className="py-2 flex flex-col gap-2">
@@ -126,22 +134,129 @@ function NewEpisodePage() {
               </div>
             </div>
 
+            {!wdpOnly && (
+              <>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-8 p-4">
+                  <Label>Learn With Jason Details</Label>
+                  <div className="space-y-2 md:col-span-2">
+                    <label
+                      className="text-sm font-medium  flex items-center gap-2"
+                      htmlFor="title"
+                    >
+                      <Type size={16} className="" />
+                      Episode Title
+                    </label>
+                    <input
+                      id="title"
+                      name="title"
+                      type="text"
+                      placeholder="e.g. The Future of Web Development"
+                      ref={titleRef}
+                      className="w-full rounded-xl px-4 py-3 text-black border border-black focus:outline-none "
+                      required
+                    />
+                  </div>
+
+                  {/* Slug */}
+                  <div className="space-y-2">
+                    <label
+                      className="text-sm font-medium  flex items-center gap-2"
+                      htmlFor="slug"
+                    >
+                      <LinkIcon size={16} className="" />
+                      URL Slug
+                    </label>
+                    <input
+                      id="slug"
+                      name="slug"
+                      type="text"
+                      placeholder="the-future-of-web-development"
+                      ref={slugRef}
+                      className="w-full rounded-xl px-4 py-3 text-black border border-black focus:outline-none"
+                      required
+                    />
+                  </div>
+
+                  {/* Date */}
+                  <div className="space-y-2">
+                    <label
+                      className="text-sm font-medium  flex items-center gap-2"
+                      htmlFor="date"
+                    >
+                      <Calendar size={16} className="" />
+                      Publish Date
+                    </label>
+                    <input
+                      id="date"
+                      name="date"
+                      type="date"
+                      ref={dateRef}
+                      className="w-full rounded-xl px-4 py-3 text-black border border-black focus:outline-none"
+                      required
+                    />
+                  </div>
+
+                  {/* Description */}
+                  <div className="space-y-2 md:col-span-2">
+                    <label
+                      className="text-sm font-medium  flex items-center gap-2"
+                      htmlFor="description"
+                    >
+                      <AlignLeft size={16} className="text-slate-500" />
+                      Description
+                    </label>
+                    <textarea
+                      id="description"
+                      name="description"
+                      placeholder="What is this episode about?"
+                      ref={descriptionRef}
+                      rows={4}
+                      className="w-full rounded-xl px-4 py-3 text-black border border-black focus:outline-none"
+                      required
+                    />
+                  </div>
+
+                  {/* Social Post */}
+                  <div className="space-y-2 md:col-span-2">
+                    <label
+                      className="text-sm font-medium  flex items-center gap-2"
+                      htmlFor="description"
+                    >
+                      <AlignLeft size={16} className="text-slate-500" />
+                      Social Post
+                    </label>
+                    <textarea
+                      id="description"
+                      name="description"
+                      placeholder="What is this episode about?"
+                      ref={socialPostRef}
+                      rows={4}
+                      className="w-full rounded-xl px-4 py-3 text-black border border-black focus:outline-none"
+                      required
+                    />
+                  </div>
+                </div>
+                <div className=" border border-slate-700" />
+              </>
+            )}
+
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8 p-4">
               {/* Title */}
+              <Label>Web Dev Podcast Details</Label>
               <div className="space-y-2 md:col-span-2">
                 <label
                   className="text-sm font-medium  flex items-center gap-2"
                   htmlFor="title"
                 >
                   <Type size={16} className="" />
-                  Episode Title
+                  WDP Episode Title
                 </label>
                 <input
                   id="title"
                   name="title"
                   type="text"
                   placeholder="e.g. The Future of Web Development"
-                  ref={titleRef}
+                  ref={titleWdpRef}
                   className="w-full rounded-xl px-4 py-3 text-black border border-black focus:outline-none "
                   required
                 />
@@ -154,33 +269,14 @@ function NewEpisodePage() {
                   htmlFor="slug"
                 >
                   <LinkIcon size={16} className="" />
-                  URL Slug
+                  WDP URL Slug
                 </label>
                 <input
                   id="slug"
                   name="slug"
                   type="text"
                   placeholder="the-future-of-web-development"
-                  ref={slugRef}
-                  className="w-full rounded-xl px-4 py-3 text-black border border-black focus:outline-none"
-                  required
-                />
-              </div>
-
-              {/* Date */}
-              <div className="space-y-2">
-                <label
-                  className="text-sm font-medium  flex items-center gap-2"
-                  htmlFor="date"
-                >
-                  <Calendar size={16} className="" />
-                  Publish Date
-                </label>
-                <input
-                  id="date"
-                  name="date"
-                  type="date"
-                  ref={dateRef}
+                  ref={slugWdpRef}
                   className="w-full rounded-xl px-4 py-3 text-black border border-black focus:outline-none"
                   required
                 />
@@ -193,13 +289,13 @@ function NewEpisodePage() {
                   htmlFor="description"
                 >
                   <AlignLeft size={16} className="text-slate-500" />
-                  Description
+                  WDP Description
                 </label>
                 <textarea
                   id="description"
                   name="description"
                   placeholder="What is this episode about?"
-                  ref={descriptionRef}
+                  ref={descriptionWdpRef}
                   rows={4}
                   className="w-full rounded-xl px-4 py-3 text-black border border-black focus:outline-none"
                   required
@@ -213,19 +309,22 @@ function NewEpisodePage() {
                   htmlFor="description"
                 >
                   <AlignLeft size={16} className="text-slate-500" />
-                  Social Post
+                  WDP Social Post
                 </label>
                 <textarea
                   id="description"
                   name="description"
                   placeholder="What is this episode about?"
-                  ref={socialPostRef}
+                  ref={socialPostWdpRef}
                   rows={4}
                   className="w-full rounded-xl px-4 py-3 text-black border border-black focus:outline-none"
                   required
                 />
               </div>
+            </div>
+            <div className=" border border-slate-700" />
 
+            <div className="p-4">
               {guests.map((guest, index) => (
                 <GuestInfo
                   key={guest.id}

@@ -1,14 +1,14 @@
-import type { Guest } from "@/lib/types";
+import type { IGuest } from "@/lib/types";
 
 interface GuestInfoProps {
   index: number;
-  guest: Guest;
-  updateGuest: (index: number, field: keyof Guest, value: string) => void;
+  guest: IGuest;
+  updateGuest: (index: number, field: keyof IGuest, value: string) => void;
 }
 
 const GuestInfo = ({ index, guest, updateGuest }: GuestInfoProps) => {
   return (
-    <div className="grid grid-cols-2 col-span-2 w-full gap-2 border-t border-slate-800 pt-6 mt-2">
+    <div className="grid grid-cols-2 col-span-2 w-full gap-2  mt-2">
       <h3 className="col-span-2 text-lg font-semibold mb-2">
         Guest {index + 1}
       </h3>

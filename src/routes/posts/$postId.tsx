@@ -8,8 +8,9 @@ import Copy from "@/components/Copy";
 import Cal from "@/components/Cal";
 import Discord from "@/components/Discord";
 import Edit from "@/components/Edit";
-import WDP from "@/components/WDP";
-import LWJ from "@/components/LWJ";
+import WDP from "@/components/Sanity";
+import Transcripts from "@/components/Transcripts";
+import EditorTab from "@/components/Editor";
 export const Route = createFileRoute("/posts/$postId")({
   loader: ({ params: { postId } }) => getEpisode(postId),
   component: PostComponent,
@@ -20,19 +21,20 @@ function PostComponent() {
 
   return (
     <div className="min-h-screen  p-4 sm:p-8 font-sans text-black">
-      <div className="max-w-3xl  mx-auto">
+      <div className="max-w-6xl  mx-auto">
         {episode && (
           <Tabs defaultValue="edit" className="w-full h-full">
-            <TabsList>
+            <TabsList className="w-full">
               <TabsTrigger value="edit">Edit</TabsTrigger>
               <TabsTrigger value="streamyard">Streamyard</TabsTrigger>
               <TabsTrigger value="cal">Cal</TabsTrigger>
               <TabsTrigger value="buffer">Buffer</TabsTrigger>
               <TabsTrigger value="discord">Discord</TabsTrigger>
-              <TabsTrigger value="links">Links</TabsTrigger> 
-              <TabsTrigger value="wdp">WDP Sanity</TabsTrigger> 
-              <TabsTrigger value="lwj">LWJ Sanity</TabsTrigger> 
-              <TabsTrigger value="published">Published Episodes</TabsTrigger> 
+              <TabsTrigger value="links">Links</TabsTrigger>
+              <TabsTrigger value="sanity"> Sanity</TabsTrigger>
+              <TabsTrigger value="published">Published Episodes</TabsTrigger>
+              <TabsTrigger value="transcripts">Transcripts</TabsTrigger>
+              <TabsTrigger value="editor">Editor</TabsTrigger>
             </TabsList>
             <TabsContent value="edit">
               <Edit episode={episode} />
@@ -52,14 +54,17 @@ function PostComponent() {
             <TabsContent value="links">
               <Links episode={episode} />
             </TabsContent>
-            <TabsContent value="wdp">
+            <TabsContent value="sanity">
               <WDP episode={episode} />
-            </TabsContent>
-            <TabsContent value="lwj">
-              <LWJ episode={episode} />
             </TabsContent>
             <TabsContent value="published">
               <Copy episode={episode} />
+            </TabsContent>
+            <TabsContent value="transcripts">
+              <Transcripts episode={episode} />
+            </TabsContent>
+            <TabsContent value="editor">
+              <EditorTab episode={episode} />
             </TabsContent>
           </Tabs>
         )}

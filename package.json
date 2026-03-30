@@ -12,6 +12,8 @@
     "test": "vitest run"
   },
   "dependencies": {
+    "@bunny.net/storage-sdk": "^0.3.1",
+    "@monaco-editor/react": "^4.7.0",
     "@tailwindcss/vite": "^4.1.18",
     "@tanstack/react-devtools": "^0.7.0",
     "@tanstack/react-router": "^1.132.0",
@@ -22,6 +24,7 @@
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "lucide-react": "^0.545.0",
+    "monaco-editor": "^0.55.1",
     "nanoid": "^5.1.6",
     "next-themes": "^0.4.6",
     "nitro": "npm:nitro-nightly@latest",

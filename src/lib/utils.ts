@@ -1,7 +1,7 @@
 import { clsx, type ClassValue } from "clsx";
 import { twMerge } from "tailwind-merge";
 import PocketBase from "pocketbase";
-import type { Guest, IEpisode, ILink } from "./types";
+import type { IGuest, IEpisode, ILink } from "./types";
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
@@ -88,7 +88,7 @@ export const replaceFirstHandle = (text: string) => {
   return result;
 };
 
-export const listGuests = (guests: Guest[]) => {
+export const listGuests = (guests: IGuest[]) => {
   let list = "";
   if (!guests || guests.length === 0) return list;
 
@@ -151,7 +151,7 @@ ${lwjLink ? `LWJ: ${lwjLink}` : ""}`;
 
 export const addHandlesToTemplate = (
   template: string,
-  guests: Guest[],
+  guests: IGuest[],
   platform?: "twitter" | "bluesky",
 ) => {
   const regexResults = getFirstHandle(template);
