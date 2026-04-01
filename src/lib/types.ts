@@ -13,7 +13,7 @@ export interface IEpisode extends RecordModel {
   social_post_wdp?: string;
   guests?: IGuest[];
   stream_link?: string;
-  links?: ILink;
+  links?: ILink[];
   wdp_only?: boolean;
   wdp_link?: string;
   lwj_link?: string;

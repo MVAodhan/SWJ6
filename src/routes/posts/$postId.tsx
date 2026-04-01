@@ -10,7 +10,6 @@ import Discord from "@/components/Discord";
 import Edit from "@/components/Edit";
 import WDP from "@/components/Sanity";
 import Transcripts from "@/components/Transcripts";
-import EditorTab from "@/components/Editor";
 export const Route = createFileRoute("/posts/$postId")({
   loader: ({ params: { postId } }) => getEpisode(postId),
   component: PostComponent,
@@ -34,7 +33,6 @@ function PostComponent() {
               <TabsTrigger value="sanity"> Sanity</TabsTrigger>
               <TabsTrigger value="published">Published Episodes</TabsTrigger>
               <TabsTrigger value="transcripts">Transcripts</TabsTrigger>
-              <TabsTrigger value="editor">Editor</TabsTrigger>
             </TabsList>
             <TabsContent value="edit">
               <Edit episode={episode} />
@@ -62,9 +60,6 @@ function PostComponent() {
             </TabsContent>
             <TabsContent value="transcripts">
               <Transcripts episode={episode} />
-            </TabsContent>
-            <TabsContent value="editor">
-              <EditorTab episode={episode} />
             </TabsContent>
           </Tabs>
         )}

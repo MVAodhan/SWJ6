@@ -13,6 +13,7 @@ import { Route as NewRouteImport } from './routes/new'
 import { Route as LoginRouteImport } from './routes/login'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as PostsPostIdRouteImport } from './routes/posts/$postId'
+import { Route as PostsRecurringIdRouteImport } from './routes/posts/recurring/$id'
 
 const NewRoute = NewRouteImport.update({
   id: '/new',
@@ -34,18 +35,25 @@ const PostsPostIdRoute = PostsPostIdRouteImport.update({
   path: '/posts/$postId',
   getParentRoute: () => rootRouteImport,
 } as any)
+const PostsRecurringIdRoute = PostsRecurringIdRouteImport.update({
+  id: '/posts/recurring/$id',
+  path: '/posts/recurring/$id',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/login': typeof LoginRoute
   '/new': typeof NewRoute
   '/posts/$postId': typeof PostsPostIdRoute
+  '/posts/recurring/$id': typeof PostsRecurringIdRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/login': typeof LoginRoute
   '/new': typeof NewRoute
   '/posts/$postId': typeof PostsPostIdRoute
+  '/posts/recurring/$id': typeof PostsRecurringIdRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -53,13 +61,20 @@ export interface FileRoutesById {
   '/login': typeof LoginRoute
   '/new': typeof NewRoute
   '/posts/$postId': typeof PostsPostIdRoute
+  '/posts/recurring/$id': typeof PostsRecurringIdRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/login' | '/new' | '/posts/$postId'
+  fullPaths: '/' | '/login' | '/new' | '/posts/$postId' | '/posts/recurring/$id'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/login' | '/new' | '/posts/$postId'
-  id: '__root__' | '/' | '/login' | '/new' | '/posts/$postId'
+  to: '/' | '/login' | '/new' | '/posts/$postId' | '/posts/recurring/$id'
+  id:
+    | '__root__'
+    | '/'
+    | '/login'
+    | '/new'
+    | '/posts/$postId'
+    | '/posts/recurring/$id'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -67,6 +82,7 @@ export interface RootRouteChildren {
   LoginRoute: typeof LoginRoute
   NewRoute: typeof NewRoute
   PostsPostIdRoute: typeof PostsPostIdRoute
+  PostsRecurringIdRoute: typeof PostsRecurringIdRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -99,6 +115,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof PostsPostIdRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/posts/recurring/$id': {
+      id: '/posts/recurring/$id'
+      path: '/posts/recurring/$id'
+      fullPath: '/posts/recurring/$id'
+      preLoaderRoute: typeof PostsRecurringIdRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
@@ -107,6 +130,7 @@ const rootRouteChildren: RootRouteChildren = {
   LoginRoute: LoginRoute,
   NewRoute: NewRoute,
   PostsPostIdRoute: PostsPostIdRoute,
+  PostsRecurringIdRoute: PostsRecurringIdRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

@@ -8,13 +8,13 @@ import { Button } from "./ui/button";
 import { useRef } from "react";
 
 const Cal = ({ episode }: { episode: IEpisode }) => {
-  const utcObject = PBToUTC(episode!.date);
+  const utcObject = PBToUTC(episode?.date!);
   const descRef = useRef<HTMLTextAreaElement>(null);
 
   return (
     <div className="w-full h-150 flex flex-col backdrop-blur-xl border border-slate-800 rounded-2xl overflow-hidden text-black p-4">
       <div className="flex flex-col gap-2">
-        <Label className="text-xl font-bold text-black">Title</Label>
+        <Label className="">Title</Label>
         <div className="flex gap-3">
           <div>{`LWJ: ${episode.title}`}</div>
           <Clipboard

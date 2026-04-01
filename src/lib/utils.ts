@@ -63,6 +63,13 @@ export const getEpisodes = async () => {
   const episodes: IEpisode[] = await pb.collection("episodes").getFullList();
   return episodes;
 };
+export const getRecurring = async () => {
+  if (!pb.authStore.record) {
+    return null;
+  }
+  const episodes = await pb.collection("recurring").getFullList();
+  return episodes;
+};
 
 export const getEpisode = async (id: string) => {
   if (!pb.authStore.record) {
