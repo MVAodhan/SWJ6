@@ -1,18 +1,19 @@
 import { useRef } from "react";
-import { Textarea } from "./ui/textarea";
 import { Clipboard } from "lucide-react";
-import type { IEpisode } from "@/lib/types";
-import { Input } from "./ui/input";
-import { Button } from "./ui/button";
+import type { IRecurring } from "@/lib/types";
+
 import { pb, pstToUTC } from "@/lib/utils";
 import { toast } from "sonner";
-import { Label } from "./ui/label";
+import { Label } from "../ui/label";
+import { Textarea } from "../ui/textarea";
+import { Button } from "../ui/button";
+import { Input } from "../ui/input";
 
-const Streamyard = ({ episode }: { episode: IEpisode }) => {
+const Streamyard = ({ episode }: { episode: IRecurring }) => {
   const ytLinkRef = useRef<HTMLInputElement | null>(null);
   const updateYoutubeLink = async () => {
     if (ytLinkRef.current?.value !== null) {
-      await pb.collection("episodes").update(`${episode.id}`, {
+      await pb.collection("recurring").update(`${episode.id}`, {
         stream_link: ytLinkRef.current!.value,
       });
 
@@ -40,10 +41,10 @@ const Streamyard = ({ episode }: { episode: IEpisode }) => {
           </div>
         </div>
         <div className="flex flex-col gap-2 pt-5 ">
-          <Label>Social Post</Label>
+          <Label>Description</Label>
 
           <div className="flex  items-center">
-            <Textarea defaultValue={episode.social_post} ref={socialPost} />
+            <Textarea defaultValue={episode.description} ref={socialPost} />
             <Button
               variant="ghost"
               onClick={() =>
@@ -92,7 +93,7 @@ const Streamyard = ({ episode }: { episode: IEpisode }) => {
         </div>
         <div className="w-full">
           <div>Youtube Link</div>
-          <Input defaultValue={episode.stream_link} ref={ytLinkRef} />
+          <Input defaultValue={episode.youtube_link} ref={ytLinkRef} />
         </div>
         <Button
           className="w-full bg-swj-yellow"

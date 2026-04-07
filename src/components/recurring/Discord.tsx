@@ -1,13 +1,13 @@
 import { Clipboard } from "lucide-react";
-import { Label } from "./ui/label";
-import { Button } from "./ui/button";
-import type { IEpisode } from "@/lib/types";
-import { Checkbox } from "./ui/checkbox";
-import { Textarea } from "./ui/textarea";
+import type { IRecurring } from "@/lib/types";
 import { pb, pstToUTC } from "@/lib/utils";
 import { useState } from "react";
+import { Button } from "../ui/button";
+import { Label } from "../ui/label";
+import { Textarea } from "../ui/textarea";
+import { Checkbox } from "../ui/checkbox";
 
-const Discord = ({ episode }: { episode: IEpisode }) => {
+const Discord = ({ episode }: { episode: IRecurring }) => {
   const utcObject = pstToUTC(episode.date!);
 
   const [discordChecked, setDiscordChecked] = useState<boolean>(
@@ -15,7 +15,7 @@ const Discord = ({ episode }: { episode: IEpisode }) => {
   );
 
   const updateDiscordStatus = async () => {
-    await pb.collection("episodes").update(`${episode.id}`, {
+    await pb.collection("recurring").update(`${episode.id}`, {
       discord: discordChecked,
     });
   };
@@ -40,7 +40,7 @@ const Discord = ({ episode }: { episode: IEpisode }) => {
               <Button
                 variant="ghost"
                 onClick={() => {
-                  navigator.clipboard.writeText(episode.youtube_link);
+                  navigator.clipboard.writeText(episode.youtube_link!);
                 }}
               >
                 <Clipboard />

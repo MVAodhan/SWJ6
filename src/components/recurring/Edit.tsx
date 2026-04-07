@@ -1,16 +1,19 @@
-import type { IGuest, IEpisode } from "@/lib/types";
-import { pstToUTC } from "@/lib/utils";
+import type { IGuest, IRecurring } from "@/lib/types";
+import { pb, pickerToPST, pstToUTC } from "@/lib/utils";
 import { AlignLeft, LinkIcon, Save, Type } from "lucide-react";
 import { useRef } from "react";
-import { Label } from "./ui/label";
-import GuestEditInfo from "./GuestEditInfo";
+import { Label } from "../ui/label";
+import GuestEditInfo from "../GuestEditInfo";
+import { Button } from "../ui/button";
 
-export default function Edit({ episode }: { episode: IEpisode }) {
+const Edit = ({ episode }: { episode: IRecurring }) => {
   const titleRef = useRef<HTMLInputElement>(null);
   const slugRef = useRef<HTMLInputElement>(null);
   const descriptionRef = useRef<HTMLTextAreaElement>(null);
   const socialPostRef = useRef<HTMLTextAreaElement>(null);
   const utcObject = pstToUTC(episode!.date!);
+
+  const dateRef = useRef<HTMLInputElement | null>(null);
 
   return (
     <div className="relative">
@@ -69,6 +72,36 @@ export default function Edit({ episode }: { episode: IEpisode }) {
               className="w-full rounded-xl px-4 py-3 text-black border border-black focus:outline-none"
               required
             />
+          </div>
+          <div className="space-y-2 col-span-full">
+            <label
+              className="text-sm font-medium  flex items-center gap-2"
+              htmlFor="slug"
+            >
+              Change Date
+            </label>
+            <input
+              id="date"
+              name="date"
+              type="date"
+              ref={dateRef}
+              className="w-full rounded-xl px-4 py-3 text-black border border-black focus:outline-none"
+              required
+            />
+            <Button
+              className="bg-swj-yellow"
+              onClick={async () => {
+                const utc = pickerToPST(dateRef.current?.value)
+                  .withTimeZone("UTC")
+                  .toString()
+                  .split("+");
+                await pb.collection("recurring").update(`${episode.id}`, {
+                  date: utc[0],
+                });
+              }}
+            >
+              Update Date
+            </Button>
           </div>
 
           {/* PST Date */}
@@ -186,4 +219,6 @@ export default function Edit({ episode }: { episode: IEpisode }) {
       </div>
     </div>
   );
-}
+};
+
+export default Edit;

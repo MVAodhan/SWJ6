@@ -1,11 +1,11 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import type { IEpisode } from "@/lib/types";
-import { PBToUTC } from "@/lib/utils";
+import { pstToUTC } from "@/lib/utils";
 import { Link } from "@tanstack/react-router";
 import { Label } from "../ui/label";
 
 export function EpisodeCard({ episode }: { episode: IEpisode }) {
-  const utcObject = PBToUTC(episode?.date!);
+  const utcObject = pstToUTC(episode?.date!);
 
   return (
     <Card className="flex-1">

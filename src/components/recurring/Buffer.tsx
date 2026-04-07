@@ -1,13 +1,13 @@
-import type { IEpisode } from "@/lib/types";
-import { Label } from "./ui/label";
-import { Button } from "./ui/button";
-import { Checkbox } from "./ui/checkbox";
+import type { IRecurring } from "@/lib/types";
 import { Clipboard } from "lucide-react";
-import { Textarea } from "./ui/textarea";
 import { useRef, useState } from "react";
 import { localStringOptions, pb, pstToUTC } from "@/lib/utils";
+import { Label } from "../ui/label";
+import { Textarea } from "../ui/textarea";
+import { Button } from "../ui/button";
+import { Checkbox } from "../ui/checkbox";
 
-const Copy = ({ episode }: { episode: IEpisode }) => {
+const Copy = ({ episode }: { episode: IRecurring }) => {
   const socialPost = useRef<HTMLTextAreaElement>(null);
 
   const [twTweet, setTwTweet] = useState<Boolean>(episode.tw_tweet!);
@@ -20,7 +20,7 @@ const Copy = ({ episode }: { episode: IEpisode }) => {
   const utcObj = pstToUTC(episode.date!);
 
   const updateStatuses = async () => {
-    await pb.collection("episodes").update(`${episode.id}`, {
+    await pb.collection("recurring").update(`${episode.id}`, {
       tw_tweet: twTweet,
       nm_tweet: nmTweet,
       live_tweet: liveTweet,
@@ -31,12 +31,12 @@ const Copy = ({ episode }: { episode: IEpisode }) => {
   };
   return (
     <div className="w-full h-150 flex backdrop-blur-xl border border-slate-800 rounded-2xl overflow-hidden text-black p-4">
-      {episode.social_post && (
+      {episode.description && (
         <div className="flex flex-col py-2 gap-2">
-          <Label>Social Post</Label>
+          <Label>Description</Label>
 
           <div className="flex items-center">
-            <Textarea defaultValue={episode.social_post} ref={socialPost} />
+            <Textarea defaultValue={episode.description} ref={socialPost} />
             <Button
               variant="ghost"
               onClick={() =>
@@ -49,7 +49,7 @@ const Copy = ({ episode }: { episode: IEpisode }) => {
             </Button>
           </div>
 
-          {episode.stream_link && (
+          {episode.youtube_link && (
             <div>
               <Label> Twitter Tweets</Label>
               <div className="grid grid-cols-3 gap-5 py-5 ">

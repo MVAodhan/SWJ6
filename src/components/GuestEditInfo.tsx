@@ -1,7 +1,7 @@
-import type { Guest } from "@/lib/types";
+import type { IGuest } from "@/lib/types";
 import { Label } from "./ui/label";
 
-const GuestEditInfo = ({ guest }: { guest: Guest }) => {
+const GuestEditInfo = ({ guest }: { guest: IGuest }) => {
   return (
     <div className="space-y-2">
       <div>

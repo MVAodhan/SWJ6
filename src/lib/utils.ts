@@ -1,7 +1,7 @@
 import { clsx, type ClassValue } from "clsx";
 import { twMerge } from "tailwind-merge";
 import PocketBase from "pocketbase";
-import type { IGuest, IEpisode, ILink } from "./types";
+import type { IGuest, IEpisode, ILink, IRecurring } from "./types";
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
@@ -23,7 +23,7 @@ export const pickerToPST = (pickerDate: any) => {
   });
   return zonedDateTime;
 };
-export const PBToUTC = (PBDate: string) => {
+export const pstToUTC = (PBDate: string) => {
   const dateTimeZone = PBDate.split(".");
 
   const date = dateTimeZone[0].split(" ");
@@ -63,7 +63,7 @@ export const getEpisodes = async () => {
   const episodes: IEpisode[] = await pb.collection("episodes").getFullList();
   return episodes;
 };
-export const getRecurring = async () => {
+export const getRecurring = async (id: string) => {
   if (!pb.authStore.record) {
     return null;
   }

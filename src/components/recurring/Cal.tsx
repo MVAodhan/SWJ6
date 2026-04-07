@@ -1,11 +1,11 @@
 import { Clipboard } from "lucide-react";
-import { Label } from "./ui/label";
 import type { IEpisode } from "@/lib/types";
 import { toast } from "sonner";
 import { calInvite, pstToUTC } from "@/lib/utils";
-import { Textarea } from "./ui/textarea";
-import { Button } from "./ui/button";
 import { useRef } from "react";
+import { Label } from "../ui/label";
+import { Textarea } from "../ui/textarea";
+import { Button } from "../ui/button";
 
 const Cal = ({ episode }: { episode: IEpisode }) => {
   const utcObject = pstToUTC(episode?.date!);

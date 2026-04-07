@@ -1,13 +1,13 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import type { IEpisode } from "@/lib/types";
-import { listGuests, PBToUTC } from "@/lib/utils";
+import { listGuests, pstToUTC } from "@/lib/utils";
 import { Link } from "@tanstack/react-router";
 import { Label } from "./ui/label";
 
 export default function EpisodeCard({ episode }: { episode: IEpisode }) {
-  const guestList = listGuests(episode.guests);
+  const guestList = listGuests(episode.guests!);
 
-  const utcObject = PBToUTC(episode.date);
+  const utcObject = pstToUTC(episode.date!);
 
   return (
     <Card className="text-black">
@@ -20,7 +20,7 @@ export default function EpisodeCard({ episode }: { episode: IEpisode }) {
       </CardHeader>
       <CardContent>
         <div>
-          {episode.guests.length > 1 ? "Guests:" : "Guest:"} {guestList}
+          {episode.guests!.length > 1 ? "Guests:" : "Guest:"} {guestList}
         </div>
         <div className="flex gap-10 lg:gap-20 py-5">
           {/* PST Date */}

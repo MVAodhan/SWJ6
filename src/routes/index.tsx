@@ -8,7 +8,7 @@ import { createFileRoute } from "@tanstack/react-router";
 export const Route = createFileRoute("/")({
   loader: async () => {
     const episodes = await getEpisodes();
-    const recurring = await getRecurring();
+    const recurring = await getRecurring("43sf6nsgdubplxl");
 
     return { episodes, recurring };
   },
@@ -17,8 +17,6 @@ export const Route = createFileRoute("/")({
 
 function App() {
   const episodes = Route.useLoaderData();
-
-  console.log(episodes.recurring?.length);
 
   return (
     <div className="min-h-screen ">
