@@ -76,7 +76,7 @@ const Edit = ({ episode }: { episode: IRecurring }) => {
           <div className="space-y-2 col-span-full">
             <label
               className="text-sm font-medium  flex items-center gap-2"
-              htmlFor="slug"
+              htmlFor="date"
             >
               Change Date
             </label>
@@ -97,6 +97,12 @@ const Edit = ({ episode }: { episode: IRecurring }) => {
                   .split("+");
                 await pb.collection("recurring").update(`${episode.id}`, {
                   date: utc[0],
+                  scheduled_tweet: false,
+                  scheduled_tweet_bs: false,
+                  ninety_minute_tweet: false,
+                  ninety_minute_tweet_bs: false,
+                  live_tweet: false,
+                  live_tweet_bs: false,
                 });
               }}
             >
